@@ -1,0 +1,2 @@
+<?php
+$container['application']->run();
