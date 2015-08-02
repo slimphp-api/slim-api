@@ -1,10 +1,6 @@
 <?php
 $container = new Pimple\Container;
 
-$container['services.composer'] = function($container) {
-    return new SlimApi\Service\ComposerService($container['composerApplication']);
-};
-
 $container['services.skeleton.structure'] = function($container) {
     // I thought long and hard about to decalre dependencies
     // should there be one for each type? controllers, services, models?
@@ -166,10 +162,6 @@ $container['commands'] = function ($container) {
     return [
         'init' => $container['commands.init'],
     ];
-};
-
-$container['composerApplication'] = function($container) {
-    return new Composer\Console\Application;
 };
 
 $container['application'] = function($container) {

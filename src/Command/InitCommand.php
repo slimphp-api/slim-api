@@ -47,11 +47,6 @@ class InitCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $composer   = $input->getOption('composer-location');
-        if (!is_executable($composer)) {
-            throw new Exception('Composer is not executable.');
-        }
-
         $name    = ucfirst($input->getArgument('name'));
         $pattern = '/^[A-Z][a-zA-Z0-9]*$/';
         if (1 !== preg_match($pattern, $name)) {
