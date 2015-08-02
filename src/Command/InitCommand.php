@@ -35,13 +35,6 @@ class InitCommand extends Command
                 'Where do you want to create the application?',
                 getcwd()
             )
-            ->addOption(
-                'composer-location',
-                'c',
-                InputOption::VALUE_OPTIONAL,
-                'The location of composer executable.',
-                '/usr/local/bin/composer'
-            )
         ;
     }
 
