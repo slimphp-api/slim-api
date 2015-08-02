@@ -131,9 +131,13 @@ EOT;
     return [
         'config' => [],
         'src' => [
-            'controller'       => [],
-            'model'            => [],
-            'dependencies.php' => 'true',
+            'Controller'       => [
+                '.gitkeep' => '',
+            ],
+            'Model'            => [
+                '.gitkeep' => '',
+            ],
+            'dependencies.php' => $dependencies,
             'middleware.php'   => $middleware,
             'routes.php'       => $routes,
             'settings.php'     => $settings,
