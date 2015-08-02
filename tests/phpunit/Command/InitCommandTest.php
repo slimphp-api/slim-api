@@ -102,7 +102,6 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
         $this->tester->execute([
             'command'  => $this->command->getName(),
             'name'     => 'Butts',
-            'location' => '/etc',
         ]);
     }
 
