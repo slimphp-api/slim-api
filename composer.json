@@ -2,7 +2,7 @@
     "name": "gabriel403/slim-api",
     "description": "Tool for generating slim api controllers/models",
     "require": {
-        "php"              : "^5.6",
+        "php"              : ">5.6",
         "pimple/pimple"    : "^3.0@dev",
         "composer/composer": "^1.0@dev",
         "symfony/console"  : "2.*",
