@@ -33,7 +33,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidName1()
     {
-        $this->setExpectedException('Exception', 'Invalid name');
+        $this->setExpectedException('Exception', 'Invalid name.');
         $this->tester->execute([
             'command' => $this->command->getName(),
             'name'    => 'Te st',
@@ -42,7 +42,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidName2()
     {
-        $this->setExpectedException('Exception', 'Invalid name');
+        $this->setExpectedException('Exception', 'Invalid name.');
         $this->tester->execute([
             'command' => $this->command->getName(),
             'name'    => 'Te-st',
@@ -98,7 +98,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNotEmpty()
     {
-        $this->setExpectedException('Exception', 'Path not empty');
+        $this->setExpectedException('Exception', 'Path not empty.');
         $this->tester->execute([
             'command'  => $this->command->getName(),
             'name'     => 'Butts',
@@ -107,7 +107,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNotWritable()
     {
-        $this->setExpectedException('Exception', 'Cannot write to path');
+        $this->setExpectedException('Exception', 'Cannot write to path.');
         $this->tester->execute([
             'command'  => $this->command->getName(),
             'name'     => 'Butts',
@@ -117,7 +117,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNotWritable2()
     {
-        $this->setExpectedException('Exception', 'Cannot write to path');
+        $this->setExpectedException('Exception', 'Cannot write to path.');
         $this->tester->execute([
             'command'  => $this->command->getName(),
             'name'     => 'Butts',

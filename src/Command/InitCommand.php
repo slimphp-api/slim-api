@@ -27,7 +27,7 @@ class InitCommand extends Command
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
-                'Application name (becomes namespace)'
+                'Application name (becomes namespace).'
             )
             ->addArgument(
                 'location',
@@ -43,7 +43,7 @@ class InitCommand extends Command
         $name    = ucfirst($input->getArgument('name'));
         $pattern = '/^[A-Z][a-zA-Z0-9]*$/';
         if (1 !== preg_match($pattern, $name)) {
-            throw new Exception('Invalid name');
+            throw new Exception('Invalid name.');
         }
 
         $path       = $input->getArgument('location');
@@ -54,11 +54,11 @@ class InitCommand extends Command
             ($pathExists && !is_writable($path)) ||
             (!$pathExists && !is_writable($pathInfo['dirname']))
         ) {
-            throw new Exception('Cannot write to path');
+            throw new Exception('Cannot write to path.');
         }
 
         if ($pathExists && 2 !== count(scandir($path))) {
-            throw new Exception('Path not empty');
+            throw new Exception('Path not empty.');
         }
 
         try {
