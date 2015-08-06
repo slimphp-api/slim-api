@@ -13,10 +13,11 @@ class InitCommand extends Command
     public static $successMessage = "Application correctly created. Don't forget to run composer install!";
     public static $failureMessage = "Application failed to create.";
 
-    public function __construct($skeletonService)
+    public function __construct($skeletonService, $databaseService)
     {
         parent::__construct();
         $this->skeletonService = $skeletonService;
+        $this->databaseService = $databaseService;
     }
 
     protected function configure()
@@ -63,6 +64,7 @@ class InitCommand extends Command
 
         try {
             $this->skeletonService->create($path, $name);
+            $this->databaseService->init($path);
             $output->writeln(static::$successMessage);
         } catch (Exception $e) {
         }

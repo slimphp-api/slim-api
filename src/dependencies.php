@@ -155,7 +155,16 @@ $container['services.skeleton'] = function($container) {
 };
 
 $container['commands.init'] = function($container) {
-    return new SlimApi\Command\InitCommand($container['services.skeleton']);
+    return new SlimApi\Command\InitCommand($container['services.skeleton'], $container['services.database']);
+};
+
+$container['phinxApplication'] = function($container) {
+    return new Phinx\Console\PhinxApplication;
+};
+
+$container['services.database'] = function($container) {
+    return new SlimApi\Service\PhinxService($container['phinxApplication']);
+};
 };
 
 $container['commands'] = function ($container) {

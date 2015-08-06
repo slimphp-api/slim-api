@@ -12,13 +12,17 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $composerServiceStub = $this->getMockBuilder('SlimApi\Service\SkeletonService')
+        $composerServiceMock = $this->getMockBuilder('SlimApi\Service\SkeletonService')
             ->disableOriginalConstructor()
             ->getMock();
-        $composerServiceStub->method('create');
+        $composerServiceMock->method('create');
+
+        $phinxServiceMock = $this->getMockBuilder('SlimApi\Service\PhinxService')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $application = new Application('SlimApi', '@package_version@');
-        $application->add(new InitCommand($composerServiceStub));
+        $application->add(new InitCommand($composerServiceMock, $phinxServiceMock));
         $this->command = $application->find('init');
         $this->tester  = new CommandTester($this->command);
     }
