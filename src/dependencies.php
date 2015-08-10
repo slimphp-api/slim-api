@@ -165,7 +165,6 @@ $container['phinxApplication'] = function($container) {
 $container['services.database'] = function($container) {
     return new SlimApi\Service\PhinxService($container['phinxApplication']);
 };
-};
 
 $container['commands'] = function ($container) {
     return [
