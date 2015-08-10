@@ -33,7 +33,7 @@ class SkeletonService
     			$this->create($newPath, $name, $subFolder);
     		} else {
                 // filename with content
-                $content  = str_replace('{$name}', $name, $subFolder);
+                $content  = strtr($subFolder, ['$name' => $name]);
     			$filePath = "{$path}/{$folder}";
     			if ( ! is_file($filePath)) {
                     file_put_contents($filePath, $content);
