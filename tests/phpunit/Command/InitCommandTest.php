@@ -17,9 +17,10 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $composerServiceMock->method('create');
 
-        $phinxServiceMock = $this->getMockBuilder('SlimApi\Service\PhinxService')
+        $phinxServiceMock = $this->getMockBuilder('SlimApi\Database\PhinxService')
             ->disableOriginalConstructor()
             ->getMock();
+        $phinxServiceMock->method('init');
 
         $application = new Application('SlimApi', '@package_version@');
         $application->add(new InitCommand($composerServiceMock, $phinxServiceMock));

@@ -65,8 +65,9 @@ class InitCommand extends Command
         try {
             $this->skeletonService->create($path, $name);
             $this->databaseService->init($path);
-            $output->writeln(static::$successMessage);
+            $output->writeln('<info>'.static::$successMessage.'</info>');
         } catch (Exception $e) {
+            $output->writeln($e->getMessage());
         }
     }
 }
