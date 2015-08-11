@@ -10,13 +10,12 @@ class PhinxService implements DatabaseInterface
 
     private function run($command, $args = [])
     {
-        $defaultArgs = [];
-        $command = $this->application->find($command);
-        $args  = array_merge($defaultArgs, $args);
-        $input = new ArrayInput($args);
-        $output = new NullOutput();
-        $retVal = $command->run($input, $output);
-
+        $defaultArgs = ['command' => $command];
+        $command     = $this->application->find($command);
+        $args        = array_merge($defaultArgs, $args);
+        $input       = new ArrayInput($args);
+        $output      = new NullOutput();
+        $command->run($input, $output);
     }
 
     public function __construct($phinxApp)
@@ -27,5 +26,13 @@ class PhinxService implements DatabaseInterface
     public function init($directory)
     {
         $this->run('init', ['path' => $directory]);
+    }
+
+    public function create($name)
+    {
+    }
+
+    public function addMigrationCommand($type, ...$arguments)
+    {
     }
 }
