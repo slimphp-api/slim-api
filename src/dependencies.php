@@ -191,9 +191,18 @@ $container['services.database'] = function($container) {
     return new SlimApi\Database\PhinxService($container['phinxApplication']);
 };
 
+$container['factory.generator'] = function($container) {
+    return new SlimApi\Factory\GeneratorFactory(['model' => new SlimApi\Generator\ModelGenerator($container['services.database'], $container['services.model'])]);
+};
+
+$container['commands.generate'] = function($container) {
+    return new SlimApi\Command\GenerateCommand($container['factory.generator']);
+};
+
 $container['commands'] = function ($container) {
     return [
-        'init' => $container['commands.init'],
+        'init'     => $container['commands.init'],
+        'generate' => $container['commands.generate'],
     ];
 };
 
