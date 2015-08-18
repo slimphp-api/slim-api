@@ -78,10 +78,10 @@ EOT;
         "phpunit/phpunit": "^5.0@dev"
     },
     "autoload": {
-        "psr-4": {"{$name}\\": "src/"}
+        "psr-4": {"$name\\": "src/"}
     },
     "autoload-dev": {
-        "psr-4": {"{$name}Test\\": "tests/phpunit/"}
+        "psr-4": {"$nameTest\\": "tests/phpunit/"}
     }
 }
 EOT;
@@ -126,6 +126,7 @@ EOT;
 
     return [
         'config' => [],
+        'migrations' => [],
         'src' => [
             'Controller'       => [
                 '.gitkeep' => '',

@@ -6,11 +6,13 @@ use Symfony\Component\Console\Output\NullOutput;
 
 class PhinxService implements DatabaseInterface
 {
+    public $commands = [];
     private $application;
+    private $types = ['string', 'text', 'integer', 'biginteger', 'float', 'decimal', 'datetime', 'timestamp', 'time', 'date', 'binary', 'boolean'];
 
     private function run($command, $args = [])
     {
-        $defaultArgs = ['command' => $command];
+        $defaultArgs = [];
         $command     = $this->application->find($command);
         $args        = array_merge($defaultArgs, $args);
         $input       = new ArrayInput($args);
@@ -30,9 +32,70 @@ class PhinxService implements DatabaseInterface
 
     public function create($name)
     {
+        PhinxMigration::$commands = $this->commands;
+        $this->run('create', ['command' => 'create', 'name' => $name, '--class' => 'SlimApi\Database\PhinxMigration']);
     }
 
     public function addMigrationCommand($type, ...$arguments)
     {
+        switch ($type) {
+            case 'create':
+                $this->createTable($arguments[0]);
+                break;
+            case 'addColumn':
+                $arguments = array_pad($arguments, 5, null);
+                $this->addColumn(...$arguments);
+                break;
+            case 'finalise':
+                $this->finalise();
+                break;
+            default:
+                throw new \Exception('Invalid migration type.');
+                break;
+        }
+    }
+
+    private function createTable($name)
+    {
+        $command = '$table = $this->table("$name");';
+        $command = strtr($command, ['$name' => $name]);
+        $this->commands[] = $command;
+    }
+
+    private function addColumn($name, $type, $limit, $nullable, $unique)
+    {
+        if (!in_array($type, $this->types)) {
+            throw new \Exception("Type not valid.");
+        }
+
+        $extras           = [];
+        $extrasStrPreFix  = ", [";
+        $extrasStrPostFix = "]";
+        $extrasStr        = "";
+
+        if (!is_null($limit)) {
+            $extras[] = sprintf('"limit" => %d', $limit);
+        }
+
+        if ('false' === $nullable || 'true' === $nullable) {
+            $extras[] = sprintf('"null" => %s', $nullable);
+        }
+
+        if ('false' === $unique || 'true' === $unique) {
+            $extras[] = sprintf('"unique" => %s', $unique);
+        }
+
+        if (count($extras) > 0) {
+            $extrasStr = $extrasStrPreFix.implode(", ", $extras).$extrasStrPostFix;
+        }
+
+        $command = sprintf('$table->addColumn("%s", "%s"%s);', $name, $type, $extrasStr);
+        $this->commands[] = $command;
+    }
+
+    private function finalise()
+    {
+        $command = '$table->create();';
+        $this->commands[] = $command;
     }
 }
