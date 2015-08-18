@@ -1,6 +1,28 @@
 <?php
 $container = new Pimple\Container;
 
+$container['namespace.root'] = function($container) {
+    // alternativly load composer.json?
+    return ucfirst(basename(getcwd()));
+};
+
+$container['model.structure'] = function($container) {
+    return <<<'EOT'
+<?php
+namespace $namespace\Model;
+
+use \Illuminate\Database\Eloquent\Model;
+
+class $name extends Model
+{
+}
+EOT;
+};
+
+$container['services.model'] = function($container) {
+    return new \SlimApi\Model\EloquentModelService($container['model.structure'], $container['namespace.root']);
+};
+
 $container['services.skeleton.structure'] = function($container) {
     // I thought long and hard about to decalre dependencies
     // should there be one for each type? controllers, services, models?
@@ -70,9 +92,11 @@ EOT;
     $composer = <<<'EOT'
 {
     "require": {
-        "php"                 : "^5.6",
-        "gabriel403/slim-api" : "*@beta",
-        "slim/slim"           : "3.*@beta"
+        "php": "^5.6",
+        "gabriel403/slim-api": "*@beta",
+        "slim/slim": "3.*@beta",
+        "robmorgan/phinx": "0.*",
+        "illuminate/database": "5.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.0@dev"
