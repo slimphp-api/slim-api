@@ -1,0 +1,76 @@
+<?php
+// DIC configuration
+$container = $app->getContainer();
+
+$container['database.config.file'] = function($container) {
+    $cwd = getcwd();
+    $locator = new Symfony\Component\Config\FileLocator([$cwd . DIRECTORY_SEPARATOR]);
+    return $locator->locate('phinx.yml', $cwd, true);
+};
+
+$container['database.config'] = function($container) {
+    $configFilePath = $container['database.config.file'];
+    $config = Phinx\Config\Config::fromYaml($configFilePath);
+    return $config;
+};
+
+$container['environment.name'] = function($container) {
+    $name = getenv('ENV') ?: 'development';
+    return $name;
+};
+
+$container['database.configForEloquent'] = function($container) {
+    $config         = $container['database.config'];
+    $environment    = $container['environment.name'];
+    $phinxConfig    = $container['database.config']->getEnvironment($environment);
+    $eloquentConfig = [
+        'driver'    => $phinxConfig['adapter'],
+        'host'      => $phinxConfig['host'],
+        'database'  => $phinxConfig['name'],
+        'username'  => $phinxConfig['user'],
+        'password'  => $phinxConfig['pass'],
+        'charset'   => $phinxConfig['charset'],
+        'collation' => 'utf8_unicode_ci',
+        'prefix'    => '',
+    ];
+
+    return $eloquentConfig;
+};
+
+$container['database.connectEloquent'] = function($container) {
+    $config  = $container['database.configForEloquent'];
+    $manager = new \Illuminate\Database\Capsule\Manager;
+    $manager->addConnection($config);
+    // Set the event dispatcher used by Eloquent models... (optional)
+    $manager->setEventDispatcher(new \Illuminate\Events\Dispatcher(new \Illuminate\Container\Container));
+    // Make this Capsule instance available globally via static methods... (optional)
+    $manager->setAsGlobal();
+    // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+    $manager->bootEloquent();
+
+    return $manager;
+};
+
+// -----------------------------------------------------------------------------
+// Service providers
+// -----------------------------------------------------------------------------
+
+// Flash messages
+// $container->register(new \Slim\Flash\Messages);
+
+// -----------------------------------------------------------------------------
+// Service factories
+// -----------------------------------------------------------------------------
+
+// monolog
+// $container['logger'] = function ($c) {
+//     $settings = $c['settings']['logger'];
+//     $logger = new \Monolog\Logger($settings['name']);
+//     $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
+//     $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], \Monolog\Logger::DEBUG));
+//     return $logger;
+// };
+
+// -----------------------------------------------------------------------------
+// Controller factories
+// -----------------------------------------------------------------------------

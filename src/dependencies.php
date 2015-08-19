@@ -6,17 +6,12 @@ $container['namespace.root'] = function($container) {
     return ucfirst(basename(getcwd()));
 };
 
+$container['templateDir'] = function($container) {
+    return realpath(__DIR__.'/../templates');
+};
+
 $container['model.structure'] = function($container) {
-    return <<<'EOT'
-<?php
-namespace $namespace\Model;
-
-use \Illuminate\Database\Eloquent\Model;
-
-class $name extends Model
-{
-}
-EOT;
+    return file_get_contents($container['templateDir'].'/ModelTemplate.txt');
 };
 
 $container['services.model'] = function($container) {
@@ -28,125 +23,14 @@ $container['services.skeleton.structure'] = function($container) {
     // should there be one for each type? controllers, services, models?
     // in the end it's not going to be managed by the api generators,
     // so a generic starting place for people to begin with seemed sensible
-    $dependencies = <<<'EOT'
-<?php
-// DIC configuration
-
-$container = $app->getContainer();
-
-// -----------------------------------------------------------------------------
-// Service providers
-// -----------------------------------------------------------------------------
-
-// Flash messages
-// $container->register(new \Slim\Flash\Messages);
-
-// -----------------------------------------------------------------------------
-// Service factories
-// -----------------------------------------------------------------------------
-
-// monolog
-// $container['logger'] = function ($c) {
-//     $settings = $c['settings']['logger'];
-//     $logger = new \Monolog\Logger($settings['name']);
-//     $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
-//     $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], \Monolog\Logger::DEBUG));
-//     return $logger;
-// };
-
-// -----------------------------------------------------------------------------
-// Controller factories
-// -----------------------------------------------------------------------------
-EOT;
-
-    $middleware = <<<'EOT'
-<?php
-// Application middleware
-// e.g: $app->add(new \gabriel403\SlimJson);
-EOT;
-
-    $routes = <<<'EOT'
-<?php
-// Routes
-EOT;
-
-    $settings = <<<'EOT'
-<?php
-$config = [];
-$files  = glob('config/*.config.php', GLOB_BRACE);
-foreach ($files as $file) {
-    $config = array_merge($config, (require $file));
-}
-return $config;
-EOT;
-
-    $gitignore = <<<'EOT'
-composer.phar
-vendor/
-
-# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
-EOT;
-
-    $composer = <<<'EOT'
-{
-    "require": {
-        "php": "^5.6",
-        "gabriel403/slim-api": "*@beta",
-        "slim/slim": "3.*@beta",
-        "robmorgan/phinx": "0.*",
-        "illuminate/database": "5.*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^5.0@dev"
-    },
-    "autoload": {
-        "psr-4": {"$name\\": "src/"}
-    },
-    "autoload-dev": {
-        "psr-4": {"$nameTest\\": "tests/phpunit/"}
-    }
-}
-EOT;
-
-    $phpunitxml = <<<EOT
-<?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
-         bootstrap="tests/phpunit/bootstrap.php"
->
-    <testsuites>
-        <testsuite name="App Test Suite">
-            <directory>./tests/phpunit/</directory>
-        </testsuite>
-    </testsuites>
-
-    <logging>
-        <log type="coverage-html" target="build/coverage"/>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-    </logging>
-
-    <filter>
-        <whitelist>
-            <directory>./src/</directory>
-        </whitelist>
-    </filter>
-</phpunit>
-EOT;
-
-    $phpunitbootstrap = <<<'EOT'
-<?php
-require __DIR__.'/../../vendor/autoload.php';
-EOT;
+    $dependencies     = file_get_contents($container['templateDir'].'/dependencies.txt');
+    $middleware       = file_get_contents($container['templateDir'].'/middleware.txt');
+    $routes           = file_get_contents($container['templateDir'].'/routes.txt');
+    $settings         = file_get_contents($container['templateDir'].'/settings.txt');
+    $gitignore        = file_get_contents($container['templateDir'].'/gitignore.txt');
+    $composer         = file_get_contents($container['templateDir'].'/composer.txt');
+    $phpunitxml       = file_get_contents($container['templateDir'].'/phpunitxml.txt');
+    $phpunitbootstrap = file_get_contents($container['templateDir'].'/phpunitbootstrap.txt');
 
     return [
         'config' => [],
