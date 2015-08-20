@@ -2,7 +2,7 @@
 namespace SlimApi\Command;
 
 use \Exception;
-use SlimApi\Service\SkeletonInterface;
+use SlimApi\Skeleton\SkeletonInterface;
 use SlimApi\Database\DatabaseInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

@@ -60,7 +60,7 @@ $container['services.skeleton.structure'] = function($container) {
 };
 
 $container['services.skeleton'] = function($container) {
-    return new SlimApi\Service\SkeletonService($container['services.skeleton.structure']);
+    return new SlimApi\Skeleton\SkeletonService($container['services.skeleton.structure']);
 };
 
 $container['commands.init'] = function($container) {
