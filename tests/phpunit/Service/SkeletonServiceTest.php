@@ -1,7 +1,7 @@
 <?php
 namespace SlimApiTest\Service;
 
-use SlimApi\Service\SkeletonService;
+use SlimApi\Skeleton\SkeletonService;
 use org\bovigo\vfs\vfsStream;
 /**
  *

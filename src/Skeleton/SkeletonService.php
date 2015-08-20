@@ -1,6 +1,5 @@
 <?php
-
-namespace SlimApi\Service;
+namespace SlimApi\Skeleton;
 
 class SkeletonService implements SkeletonInterface
 {
