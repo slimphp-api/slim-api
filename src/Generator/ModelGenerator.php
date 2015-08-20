@@ -1,9 +1,12 @@
 <?php
 namespace SlimApi\Generator;
 
+use SlimApi\Database\DatabaseInterface;
+use SlimApi\Model\ModelInterface;
+
 class ModelGenerator implements GeneratorInterface
 {
-    public function __construct($migrationService, $modelService)
+    public function __construct(DatabaseInterface $migrationService, ModelInterface $modelService)
     {
         $this->migrationService = $migrationService;
         $this->modelService     = $modelService;

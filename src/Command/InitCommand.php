@@ -2,6 +2,8 @@
 namespace SlimApi\Command;
 
 use \Exception;
+use SlimApi\Service\SkeletonInterface;
+use SlimApi\Database\DatabaseInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +15,7 @@ class InitCommand extends Command
     public static $successMessage = "Application correctly created. Don't forget to run composer install!";
     public static $failureMessage = "Application failed to create.";
 
-    public function __construct($skeletonService, $databaseService)
+    public function __construct(SkeletonInterface $skeletonService, DatabaseInterface $databaseService)
     {
         parent::__construct();
         $this->skeletonService = $skeletonService;
