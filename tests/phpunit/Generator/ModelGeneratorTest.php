@@ -1,13 +1,14 @@
 <?php
 namespace SlimApiTest\Generator;
 
-use SlimApi\Generator\ModelGenerator;
 use SlimApi\Database\PhinxService;
+use SlimApi\Generator\ModelGenerator;
+use SlimApi\Model\ModelInterface;
 use org\bovigo\vfs\vfsStream;
 
 class PhinxApplicationMock {public function run(){return true;} public function find($name) { $class = '\Phinx\Console\Command\\'.ucfirst($name); return new $class; }}
 class CommandMock {public function run(){return 0;}}
-class ModelServiceMock {public function create(){return true;}}
+class ModelServiceMock implements ModelInterface {public function create($name){return true;} public function __construct($modelTemplate, $namespace){}}
 class PhinxApplication2Mock {public function run(){return true;} public function find($name) { return new CommandMock; }}
 
 class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
@@ -20,12 +21,12 @@ class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
         // $phinxApplicationMock->method('run')
         //     ->willReturn(true);
         // $phinxApplicationMock->run();
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplication2Mock), new ModelServiceMock);
+        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplication2Mock), new ModelServiceMock('', ''));
     }
 
     public function testModelExists()
     {
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock);
+        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''));
         $composerContent = '{"autoload":{"psr-4": {"Project1\\\": "src/"}}}';
         $modelContent = '<?php namespace Project1\Model; class Foo {}';
         chdir(__DIR__.'/../output');
@@ -44,7 +45,7 @@ class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testModelNotExists()
     {
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock);
+        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''));
         $composerContent = '{"autoload":{"psr-4": {"Project2\\\": "src/"}}}';
         chdir(__DIR__.'/../output');
         if (file_exists('project2')) {

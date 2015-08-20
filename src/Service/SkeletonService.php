@@ -2,10 +2,7 @@
 
 namespace SlimApi\Service;
 
-/**
- *
- */
-class SkeletonService
+class SkeletonService implements SkeletonInterface
 {
     public function __construct($structure)
     {
