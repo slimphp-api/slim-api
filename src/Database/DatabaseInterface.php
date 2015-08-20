@@ -5,5 +5,5 @@ interface DatabaseInterface
 {
     public function init($directory);
     public function create($name);
-    public function addMigrationCommand($type, ...$arguments);
+    public function processCommand($type, ...$arguments);
 }

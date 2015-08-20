@@ -11,6 +11,7 @@ class ModelGenerator implements GeneratorInterface
 
     public function validate($name, $fields)
     {
+        $name = ucfirst($name);
         if ($this->modelExists($name)) {
             return false;
         }
@@ -19,13 +20,14 @@ class ModelGenerator implements GeneratorInterface
 
     public function process($name, $fields)
     {
+        $name = ucfirst($name);
         $this->processCreateMigration($name, $fields);
         $this->processCreateModel($name, $fields);
     }
 
     private function processCreateMigration($name, $fields)
     {
-        $this->migrationService->addMigrationCommand('create', ucfirst($name));
+        $this->migrationService->processCommand('create', $name);
 
         // name:type:limit:null:unique
         foreach ($fields as $fieldDefinition) {
@@ -33,10 +35,10 @@ class ModelGenerator implements GeneratorInterface
             $fieldDefinition = array_map(function($value) {
                 return (strlen($value) === 0 ? NULL : $value);
             }, $fieldDefinition);
-            $this->migrationService->addMigrationCommand('addColumn', ...$fieldDefinition);
+            $this->migrationService->processCommand('addColumn', ...$fieldDefinition);
         }
 
-        $this->migrationService->addMigrationCommand('finalise');
+        $this->migrationService->processCommand('finalise');
         $this->migrationService->create($name);
     }
 

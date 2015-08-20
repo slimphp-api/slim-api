@@ -26,12 +26,12 @@ class PhinxServiceTest extends \PHPUnit_Framework_TestCase
     public function testInvalidMigrationType()
     {
         $this->setExpectedException('Exception', 'Invalid migration type.');
-        $this->phinxService->addMigrationCommand('foo');
+        $this->phinxService->processCommand('foo');
     }
 
     public function testCreateTable()
     {
-        $this->phinxService->addMigrationCommand('create', 'test');
+        $this->phinxService->processCommand('create', 'test');
         $this->assertEquals(1, count($this->phinxService->commands));
         $this->assertEquals('$table = $this->table("test");', $this->phinxService->commands[0]);
     }
@@ -39,47 +39,47 @@ class PhinxServiceTest extends \PHPUnit_Framework_TestCase
     public function testAddColumnIncorrectType()
     {
         $this->setExpectedException('Exception', 'Type not valid.');
-        $this->phinxService->addMigrationCommand('addColumn', 'test', 'int');
+        $this->phinxService->processCommand('addColumn', 'test', 'int');
     }
 
     public function testAddColumnSimple()
     {
-        $this->phinxService->addMigrationCommand('addColumn', 'test', 'integer');
+        $this->phinxService->processCommand('addColumn', 'test', 'integer');
         $this->assertEquals(1, count($this->phinxService->commands));
         $this->assertEquals('$table->addColumn("test", "integer");', $this->phinxService->commands[0]);
     }
 
     public function testAddColumnWithLimit()
     {
-        $this->phinxService->addMigrationCommand('addColumn', 'test', 'integer', '30');
+        $this->phinxService->processCommand('addColumn', 'test', 'integer', '30');
         $this->assertEquals(1, count($this->phinxService->commands));
         $this->assertEquals('$table->addColumn("test", "integer", ["limit" => 30]);', $this->phinxService->commands[0]);
     }
 
     public function testAddColumnWithNull()
     {
-        $this->phinxService->addMigrationCommand('addColumn', 'test', 'integer', null, 'true');
+        $this->phinxService->processCommand('addColumn', 'test', 'integer', null, 'true');
         $this->assertEquals(1, count($this->phinxService->commands));
         $this->assertEquals('$table->addColumn("test", "integer", ["null" => true]);', $this->phinxService->commands[0]);
     }
 
     public function testAddColumnWithUnique()
     {
-        $this->phinxService->addMigrationCommand('addColumn', 'test', 'integer', null, null, 'true');
+        $this->phinxService->processCommand('addColumn', 'test', 'integer', null, null, 'true');
         $this->assertEquals(1, count($this->phinxService->commands));
         $this->assertEquals('$table->addColumn("test", "integer", ["unique" => true]);', $this->phinxService->commands[0]);
     }
 
     public function testAddColumnWithEverything()
     {
-        $this->phinxService->addMigrationCommand('addColumn', 'test', 'integer', '30', 'false', 'true');
+        $this->phinxService->processCommand('addColumn', 'test', 'integer', '30', 'false', 'true');
         $this->assertEquals(1, count($this->phinxService->commands));
         $this->assertEquals('$table->addColumn("test", "integer", ["limit" => 30, "null" => false, "unique" => true]);', $this->phinxService->commands[0]);
     }
 
     public function testFinaliseTable()
     {
-        $this->phinxService->addMigrationCommand('finalise');
+        $this->phinxService->processCommand('finalise');
         $this->assertEquals(1, count($this->phinxService->commands));
         $this->assertEquals('$table->create();', $this->phinxService->commands[0]);
     }

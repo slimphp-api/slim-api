@@ -36,7 +36,7 @@ class PhinxService implements DatabaseInterface
         $this->run('create', ['command' => 'create', 'name' => $name, '--class' => 'SlimApi\Database\PhinxMigration']);
     }
 
-    public function addMigrationCommand($type, ...$arguments)
+    public function processCommand($type, ...$arguments)
     {
         switch ($type) {
             case 'create':
