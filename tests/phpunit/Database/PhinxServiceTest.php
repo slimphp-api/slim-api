@@ -101,4 +101,9 @@ class PhinxServiceTest extends \PHPUnit_Framework_TestCase
         $phinxService->init('project0/');
         $this->assertTrue(is_file('project0/phinx.yml'));
     }
+
+    public function testTargetLocation()
+    {
+        $this->assertEquals('', $this->phinxService->targetLocation('Foo'));
+    }
 }

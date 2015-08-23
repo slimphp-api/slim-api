@@ -15,6 +15,9 @@ class GeneratorFactory
             case 'model':
                 $generator = $this->generators['model'];
                 break;
+            case 'controller':
+                $generator = $this->generators['controller'];
+                break;
         }
         return $generator;
     }

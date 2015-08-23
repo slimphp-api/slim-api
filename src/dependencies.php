@@ -75,8 +75,26 @@ $container['services.database'] = function($container) {
     return new SlimApi\Database\PhinxService($container['phinxApplication']);
 };
 
+$container['services.controller'] = function($container) {
+    return 'SlimApi\Controller\ControllerService';
+};
+
+$container['services.controller.empty'] = function($container) {
+    $indexAction     = file_get_contents($container['templateDir'].'/emptyIndexAction.txt');
+    $getAction       = file_get_contents($container['templateDir'].'/emptyGetAction.txt');
+    $postAction      = file_get_contents($container['templateDir'].'/emptyPostAction.txt');
+    $putAction       = file_get_contents($container['templateDir'].'/emptyPutAction.txt');
+    $deleteAction    = file_get_contents($container['templateDir'].'/emptyDeleteAction.txt');
+    $controllerClass = file_get_contents($container['templateDir'].'/ControllerClass.txt');
+    $service         = $container['services.controller'];
+    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $container['namespace.root']);
+};
+
 $container['factory.generator'] = function($container) {
-    return new SlimApi\Factory\GeneratorFactory(['model' => new SlimApi\Generator\ModelGenerator($container['services.database'], $container['services.model'])]);
+    return new SlimApi\Factory\GeneratorFactory([
+        'model'      => new SlimApi\Generator\ModelGenerator($container['services.database'], $container['services.model']),
+        'controller' => new SlimApi\Generator\ControllerGenerator($container['services.controller.empty']),
+    ]);
 };
 
 $container['commands.generate'] = function($container) {

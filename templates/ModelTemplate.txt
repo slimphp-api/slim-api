@@ -3,6 +3,6 @@ namespace $namespace\Model;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class $name extends Model
+class $nameModel extends Model
 {
 }
