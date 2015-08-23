@@ -32,6 +32,7 @@ EOT;
     public function getMigrationTemplate() {
         $template = $this->template;
         $template = strtr($template, ['$commands' => implode(PHP_EOL.'        ', static::$commands)]);
+        $template = implode(PHP_EOL, array_map('rtrim', explode(PHP_EOL, $template)));
         return $template;
     }
 

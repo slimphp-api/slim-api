@@ -3,22 +3,13 @@ namespace SlimApi\Database;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use SlimApi\Interfaces\GeneratorServiceInterface;
 
-class PhinxService implements DatabaseInterface
+class PhinxService implements DatabaseInterface, GeneratorServiceInterface
 {
     public $commands = [];
     private $application;
     private $types = ['string', 'text', 'integer', 'biginteger', 'float', 'decimal', 'datetime', 'timestamp', 'time', 'date', 'binary', 'boolean'];
-
-    private function run($command, $args = [])
-    {
-        $defaultArgs = [];
-        $command     = $this->application->find($command);
-        $args        = array_merge($defaultArgs, $args);
-        $input       = new ArrayInput($args);
-        $output      = new NullOutput();
-        $command->run($input, $output);
-    }
 
     public function __construct($phinxApp)
     {
@@ -28,12 +19,6 @@ class PhinxService implements DatabaseInterface
     public function init($directory)
     {
         $this->run('init', ['path' => $directory]);
-    }
-
-    public function create($name)
-    {
-        PhinxMigration::$commands = $this->commands;
-        $this->run('create', ['command' => 'create', 'name' => $name, '--class' => 'SlimApi\Database\PhinxMigration']);
     }
 
     public function processCommand($type, ...$arguments)
@@ -55,11 +40,32 @@ class PhinxService implements DatabaseInterface
         }
     }
 
+    public function create($name)
+    {
+        PhinxMigration::$commands = $this->commands;
+        $this->run('create', ['command' => 'create', 'name' => $name, '--class' => 'SlimApi\Database\PhinxMigration']);
+    }
+
+    public function targetLocation($name)
+    {
+        return '';
+    }
+
     private function createTable($name)
     {
-        $command = '$table = $this->table("$name");';
-        $command = strtr($command, ['$name' => $name]);
+        $command          = '$table = $this->table("$name");';
+        $command          = strtr($command, ['$name' => $name]);
         $this->commands[] = $command;
+    }
+
+    private function run($command, $args = [])
+    {
+        $defaultArgs = [];
+        $command     = $this->application->find($command);
+        $args        = array_merge($defaultArgs, $args);
+        $input       = new ArrayInput($args);
+        $output      = new NullOutput();
+        $command->run($input, $output);
     }
 
     private function addColumn($name, $type, $limit, $nullable, $unique)
@@ -89,13 +95,13 @@ class PhinxService implements DatabaseInterface
             $extrasStr = $extrasStrPreFix.implode(", ", $extras).$extrasStrPostFix;
         }
 
-        $command = sprintf('$table->addColumn("%s", "%s"%s);', $name, $type, $extrasStr);
+        $command          = sprintf('$table->addColumn("%s", "%s"%s);', $name, $type, $extrasStr);
         $this->commands[] = $command;
     }
 
     private function finalise()
     {
-        $command = '$table->create();';
+        $command          = '$table->create();';
         $this->commands[] = $command;
     }
 }

@@ -52,9 +52,6 @@ class ModelGenerator implements GeneratorInterface
 
     private function modelExists($name)
     {
-        // cwd should also be namespace
-        // perhaps we could also parse the composer.json for
-        // ['autoload']['psr-4'] $key?
-        return is_file('src/Model/'.$name.'.php');
+        return is_file($this->modelService->targetLocation($name));
     }
 }

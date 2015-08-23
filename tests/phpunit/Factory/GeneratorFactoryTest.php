@@ -14,6 +14,6 @@ class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase
     public function testReturnsModelGenerator()
     {
         $generator = $this->generatorFactory->fetch('model');
-        $this->assertInstanceOf('SlimApi\Generator\ModelGenerator', $generator);
+        $this->assertInstanceOf('SlimApi\Generator\GeneratorInterface', $generator);
     }
 }

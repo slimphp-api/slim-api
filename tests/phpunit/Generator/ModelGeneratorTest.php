@@ -8,7 +8,7 @@ use org\bovigo\vfs\vfsStream;
 
 class PhinxApplicationMock {public function run(){return true;} public function find($name) { $class = '\Phinx\Console\Command\\'.ucfirst($name); return new $class; }}
 class CommandMock {public function run(){return 0;}}
-class ModelServiceMock implements ModelInterface {public function create($name){return true;} public function __construct($modelTemplate, $namespace){}}
+class ModelServiceMock implements ModelInterface {public function create($name){return true;} public function __construct($modelTemplate, $namespace){} public function targetLocation($name){return 'src/Model/'.$name.'Model.php';}}
 class PhinxApplication2Mock {public function run(){return true;} public function find($name) { return new CommandMock; }}
 
 class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
@@ -37,7 +37,7 @@ class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
         mkdir('project1/src');
         mkdir('project1/src/Model');
         file_put_contents('project1/composer.json', $composerContent);
-        file_put_contents('project1/src/Model/Foo.php', $modelContent);
+        file_put_contents('project1/src/Model/FooModel.php', $modelContent);
         chdir('project1/');
 
         $this->assertFalse($this->modelGenerator->validate('Foo', []));
