@@ -1,5 +1,5 @@
 {
-    "name": "gabriel403/slim-api",
+    "name": "slimphp-api/slim-api",
     "description": "Tool for generating slim api controllers/models",
     "require": {
         "php": ">5.6",
