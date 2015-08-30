@@ -25,7 +25,7 @@ class PhinxServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidMigrationType()
     {
-        $this->setExpectedException('Exception', 'Invalid migration type.');
+        $this->setExpectedException('Exception', 'Invalid migration command.');
         $this->phinxService->processCommand('foo');
     }
 

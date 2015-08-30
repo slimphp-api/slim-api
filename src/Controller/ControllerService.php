@@ -37,9 +37,9 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
     public function create($name)
     {
         $template = $this->templates['class'];
-        $content  = strtr($template, ['$namespace' => $this->namespace, '$name' => $name, '$commands' => implode(PHP_EOL.'    ', $this->commands)]);
+        $content  = strtr($template, ['$namespace' => $this->namespace, '$name' => $name, '$commands' => implode(PHP_EOL.PHP_EOL, $this->commands)]);
         $content = implode(PHP_EOL, array_map('rtrim', explode(PHP_EOL, $content)));
-        return file_put_contents('src/Controller/'.$name.'Controller.php', $content);
+        return file_put_contents($this->targetLocation($name), $content);
     }
 
     public function targetLocation($name)
@@ -50,7 +50,9 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
     private function addAction($actionName)
     {
         $template         = $this->templates[$actionName];
-        $command          = strtr($template, ['$actionName' => $actionName]);
+        $command          = preg_filter('/^/', '    ', explode(PHP_EOL, strtr($template, ['$actionName' => $actionName])));
+        $command          = array_filter($command, function($var){return strlen(trim($var));});
+        $command          = implode(PHP_EOL, $command);
         $this->commands[] = $command;
     }
 }
