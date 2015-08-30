@@ -8,7 +8,7 @@ class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->generatorFactory = new GeneratorFactory(['model' => new ModelGeneratorMock, 'controller' => new ModelGeneratorMock]);
+        $this->generatorFactory = new GeneratorFactory(['model' => new ModelGeneratorMock, 'controller' => new ModelGeneratorMock, 'scaffold' => new ModelGeneratorMock]);
     }
 
     public function testReturnsModelGenerator()
@@ -20,6 +20,12 @@ class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase
     public function testReturnsControllerGenerator()
     {
         $generator = $this->generatorFactory->fetch('controller');
+        $this->assertInstanceOf('SlimApi\Generator\GeneratorInterface', $generator);
+    }
+
+    public function testReturnsScaffoldGenerator()
+    {
+        $generator = $this->generatorFactory->fetch('scaffold');
         $this->assertInstanceOf('SlimApi\Generator\GeneratorInterface', $generator);
     }
 }
