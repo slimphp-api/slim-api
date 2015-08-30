@@ -1,0 +1,6 @@
+public function indexAction($request, $response, $args)
+{
+    $models = $this->model->get();
+    $response->write($models);
+    return $response;
+}

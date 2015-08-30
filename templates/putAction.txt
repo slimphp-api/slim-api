@@ -1,0 +1,7 @@
+public function putAction($request, $response, $args)
+{
+    $model = $this->model->findOrFail($args['id']);
+    $model->update($request->getParsedBody());
+    $response->write($model);
+    return $response;
+}

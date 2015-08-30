@@ -79,6 +79,17 @@ $container['services.controller'] = function($container) {
     return 'SlimApi\Controller\ControllerService';
 };
 
+$container['services.controller.populated'] = function($container) {
+    $indexAction     = file_get_contents($container->get('templateDir').'/indexAction.txt');
+    $getAction       = file_get_contents($container->get('templateDir').'/getAction.txt');
+    $postAction      = file_get_contents($container->get('templateDir').'/postAction.txt');
+    $putAction       = file_get_contents($container->get('templateDir').'/putAction.txt');
+    $deleteAction    = file_get_contents($container->get('templateDir').'/deleteAction.txt');
+    $controllerClass = file_get_contents($container->get('templateDir').'/ControllerClass.txt');
+    $service         = $container->get('services.controller');
+    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $container->get('namespace.root'));
+};
+
 $container['services.controller.empty'] = function($container) {
     $indexAction     = file_get_contents($container->get('templateDir').'/emptyIndexAction.txt');
     $getAction       = file_get_contents($container->get('templateDir').'/emptyGetAction.txt');
@@ -102,10 +113,19 @@ $container['factory.generator.controller.empty'] = function($container) {
     return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.empty'), $container->get('services.route'));
 };
 
+$container['factory.generator.controller.populated'] = function($container) {
+    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.populated'), $container->get('services.route'));
+};
+
+$container['factory.generator.scaffold'] = function($container) {
+    return new SlimApi\Generator\ScaffoldGenerator($container->get('factory.generator.controller.populated'), $container->get('factory.generator.model'));
+};
+
 $container['factory.generator'] = function($container) {
     return new SlimApi\Factory\GeneratorFactory([
         'model'      => $container->get('factory.generator.model'),
         'controller' => $container->get('factory.generator.controller.empty'),
+        'scaffold'   => $container->get('factory.generator.scaffold'),
     ]);
 };
 

@@ -3,6 +3,7 @@ namespace $namespace\Model;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class $nameModel extends Model
+class $name extends Model
 {
+    protected $fillable = [$fields];
 }
