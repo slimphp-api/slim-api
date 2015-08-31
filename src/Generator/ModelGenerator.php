@@ -39,15 +39,20 @@ class ModelGenerator implements GeneratorInterface
                 return (strlen($value) === 0 ? NULL : $value);
             }, $fieldDefinition);
             $this->migrationService->processCommand('addColumn', ...$fieldDefinition);
-            $this->modelService->processCommand('addColumn', ...$fieldDefinition);
         }
 
         $this->migrationService->processCommand('finalise');
         $this->migrationService->create($name);
     }
 
-    private function processCreateModel($name)
+    private function processCreateModel($name, $fields)
     {
+        // name:type:limit:null:unique
+        foreach ($fields as $fieldDefinition) {
+            $fieldDefinition = explode(':', $fieldDefinition);
+            $this->modelService->processCommand('addColumn', ...$fieldDefinition);
+        }
+
         $this->modelService->create($name);
     }
 
