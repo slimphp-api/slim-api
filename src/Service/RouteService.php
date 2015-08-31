@@ -5,7 +5,9 @@ use SlimApi\Interfaces\GeneratorServiceInterface;
 
 class RouteService implements GeneratorServiceInterface
 {
-    public function __construct($routeTemplate, $routerFileLocation, $namespaceRoot)
+    public $commands = [];
+
+    public function __construct($routerFileLocation, $routeTemplate, $namespaceRoot)
     {
         $this->template           = $routeTemplate;
         $this->routerFileLocation = $routerFileLocation;

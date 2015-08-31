@@ -103,7 +103,7 @@ $container['services.controller.empty'] = function($container) {
 };
 
 $container['services.route'] = function($container) {
-    return new SlimApi\Service\RouteService(file_get_contents($container->get('templateDir').'/route.txt'), 'src/routes.php', $container->get('namespace.root'));
+    return new SlimApi\Service\RouteService('src/routes.php', file_get_contents($container->get('templateDir').'/route.txt'), $container->get('namespace.root'));
 };
 
 $container['factory.generator.model'] = function($container) {
