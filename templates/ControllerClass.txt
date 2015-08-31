@@ -3,10 +3,5 @@ namespace $namespace\Controller;
 
 class $nameController
 {
-    public function __construct($model)
-    {
-        $this->model = $model;
-    }
-
-$commands
+$constructor$commands
 }

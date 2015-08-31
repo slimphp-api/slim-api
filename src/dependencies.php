@@ -86,8 +86,9 @@ $container['services.controller.populated'] = function($container) {
     $putAction       = file_get_contents($container->get('templateDir').'/putAction.txt');
     $deleteAction    = file_get_contents($container->get('templateDir').'/deleteAction.txt');
     $controllerClass = file_get_contents($container->get('templateDir').'/ControllerClass.txt');
+    $controllerCons  = file_get_contents($container->get('templateDir').'/ControllerConstructor.txt');
     $service         = $container->get('services.controller');
-    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $container->get('namespace.root'));
+    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $controllerCons, $container->get('namespace.root'));
 };
 
 $container['services.controller.empty'] = function($container) {
@@ -98,7 +99,7 @@ $container['services.controller.empty'] = function($container) {
     $deleteAction    = file_get_contents($container->get('templateDir').'/emptyDeleteAction.txt');
     $controllerClass = file_get_contents($container->get('templateDir').'/ControllerClass.txt');
     $service         = $container->get('services.controller');
-    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $container->get('namespace.root'));
+    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, '', $container->get('namespace.root'));
 };
 
 $container['services.route'] = function($container) {

@@ -9,15 +9,16 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
     private $templates = [];
     private $namespace = '';
 
-    public function __construct($indexTemplate, $getTemplate, $postTemplate, $putTemplate, $deleteTemplate, $classTemplate, $namespace)
+    public function __construct($indexTemplate, $getTemplate, $postTemplate, $putTemplate, $deleteTemplate, $classTemplate, $constructorTemplate, $namespace)
     {
-        $this->templates['index']  = $indexTemplate;
-        $this->templates['get']    = $getTemplate;
-        $this->templates['post']   = $postTemplate;
-        $this->templates['put']    = $putTemplate;
-        $this->templates['delete'] = $deleteTemplate;
-        $this->templates['class']  = $classTemplate;
-        $this->namespace           = $namespace;
+        $this->templates['index']       = $indexTemplate;
+        $this->templates['get']         = $getTemplate;
+        $this->templates['post']        = $postTemplate;
+        $this->templates['put']         = $putTemplate;
+        $this->templates['delete']      = $deleteTemplate;
+        $this->templates['class']       = $classTemplate;
+        $this->templates['constructor'] = $constructorTemplate;
+        $this->namespace                = $namespace;
     }
 
     public function processCommand($type, ...$arguments)
@@ -36,9 +37,21 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
 
     public function create($name)
     {
+
+        $consTemplate = $this->templates['constructor'];
+        if (strlen($consTemplate) > 0) {
+            $consTemplate = preg_filter('/^/', '    ', explode(PHP_EOL, $consTemplate));
+            $consTemplate = implode(PHP_EOL, $consTemplate).PHP_EOL;
+        }
+
         $template = $this->templates['class'];
-        $content  = strtr($template, ['$namespace' => $this->namespace, '$name' => $name, '$commands' => implode(PHP_EOL.PHP_EOL, $this->commands)]);
-        $content = implode(PHP_EOL, array_map('rtrim', explode(PHP_EOL, $content)));
+        $content  = strtr($template, [
+            '$namespace'   => $this->namespace,
+            '$name'        => $name,
+            '$commands'    => implode(PHP_EOL.PHP_EOL, $this->commands),
+            '$constructor' => $consTemplate
+        ]);
+
         return file_put_contents($this->targetLocation($name), $content);
     }
 

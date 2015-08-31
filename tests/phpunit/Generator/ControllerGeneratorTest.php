@@ -3,14 +3,16 @@ namespace SlimApiTest\Generator;
 
 use SlimApi\Controller\ControllerInterface;
 use SlimApi\Generator\ControllerGenerator;
+use SlimApi\Interfaces\GeneratorServiceInterface;
 
+class RouteServiceMock implements GeneratorServiceInterface {public function processCommand($type, ...$arguments){} public function create($name){} public function targetLocation($name){}}
 class ControllerServiceMock implements ControllerInterface {public $commands = []; public function create($name){} public function processCommand($type, $action){$this->commands[] = $action;} public function targetLocation($name){return 'src/Controller/'.$name.'Controller.php';}}
 
 class ControllerGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->controllerGenerator = new ControllerGenerator(new ControllerServiceMock);
+        $this->controllerGenerator = new ControllerGenerator(new ControllerServiceMock, new RouteServiceMock);
     }
 
     public function testInvalidAction()
