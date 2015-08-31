@@ -1,0 +1,3 @@
+$container['controller.$name'] = function($container) {
+    return new \$namespace\Controller\$nameController($container->get('model.$name'));
+};

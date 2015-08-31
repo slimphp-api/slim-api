@@ -106,16 +106,20 @@ $container['services.route'] = function($container) {
     return new SlimApi\Service\RouteService('src/routes.php', file_get_contents($container->get('templateDir').'/route.txt'), $container->get('namespace.root'));
 };
 
+$container['services.dependency'] = function($container) {
+    return new SlimApi\Service\DependencyService('src/dependencies.php', file_get_contents($container->get('templateDir').'/ControllerDependency.txt'), file_get_contents($container->get('templateDir').'/ModelDependency.txt'), $container->get('namespace.root'));
+};
+
 $container['factory.generator.model'] = function($container) {
-    return new SlimApi\Generator\ModelGenerator($container->get('services.database'), $container->get('services.model'));
+    return new SlimApi\Generator\ModelGenerator($container->get('services.database'), $container->get('services.model'), $container->get('services.dependency'));
 };
 
 $container['factory.generator.controller.empty'] = function($container) {
-    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.empty'), $container->get('services.route'));
+    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.empty'), $container->get('services.route'), $container->get('services.dependency'));
 };
 
 $container['factory.generator.controller.populated'] = function($container) {
-    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.populated'), $container->get('services.route'));
+    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.populated'), $container->get('services.route'), $container->get('services.dependency'));
 };
 
 $container['factory.generator.scaffold'] = function($container) {
