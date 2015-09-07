@@ -23,10 +23,12 @@ $container['services.skeleton.structure'] = function($container) {
     // should there be one for each type? controllers, services, models?
     // in the end it's not going to be managed by the api generators,
     // so a generic starting place for people to begin with seemed sensible
+    $index            = file_get_contents($container->get('templateDir').'/index.txt');
     $dependencies     = file_get_contents($container->get('templateDir').'/dependencies.txt');
     $middleware       = file_get_contents($container->get('templateDir').'/middleware.txt');
     $routes           = file_get_contents($container->get('templateDir').'/routes.txt');
     $settings         = file_get_contents($container->get('templateDir').'/settings.txt');
+    $bootstrap        = file_get_contents($container->get('templateDir').'/bootstrap.txt');
     $gitignore        = file_get_contents($container->get('templateDir').'/gitignore.txt');
     $composer         = file_get_contents($container->get('templateDir').'/composer.txt');
     $phpunitxml       = file_get_contents($container->get('templateDir').'/phpunitxml.txt');
@@ -35,6 +37,9 @@ $container['services.skeleton.structure'] = function($container) {
     return [
         'config' => [],
         'migrations' => [],
+        'public' => [
+            'index.php' => $index
+        ],
         'src' => [
             'Controller'       => [
                 '.gitkeep' => '',
@@ -46,6 +51,7 @@ $container['services.skeleton.structure'] = function($container) {
             'middleware.php'   => $middleware,
             'routes.php'       => $routes,
             'settings.php'     => $settings,
+            'bootstrap.php'    => $bootstrap,
         ],
         'tests' => [
             'phpunit' => [

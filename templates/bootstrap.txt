@@ -1,0 +1,14 @@
+<?php
+use Slim\App;
+
+// import settings
+$config = require 'settings.php';
+$app    = new App($config);
+// Set up dependencies
+require 'dependencies.php';
+// Register middleware
+require 'middleware.php';
+// Register routes
+require 'routes.php';
+
+$app->run();
