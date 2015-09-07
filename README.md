@@ -2,6 +2,7 @@
 Basic slim api project and generator
 
 ![travis-ci status](https://travis-ci.org/gabriel403/slim-api.svg)
+[![Coverage Status](https://coveralls.io/repos/slimphp-api/slim-api/badge.svg?service=github)](https://coveralls.io/github/slimphp-api/slim-api)
 
 #Status
 
