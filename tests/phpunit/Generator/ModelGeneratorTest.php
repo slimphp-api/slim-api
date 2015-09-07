@@ -3,13 +3,15 @@ namespace SlimApiTest\Generator;
 
 use SlimApi\Database\PhinxService;
 use SlimApi\Generator\ModelGenerator;
+use SlimApi\Interfaces\GeneratorServiceInterface;
 use SlimApi\Model\ModelInterface;
 use org\bovigo\vfs\vfsStream;
 
 class PhinxApplicationMock {public function run(){return true;} public function find($name) { $class = '\Phinx\Console\Command\\'.ucfirst($name); return new $class; }}
 class CommandMock {public function run(){return 0;}}
-class ModelServiceMock implements ModelInterface {public function create($name){return true;} public function __construct($modelTemplate, $namespace){} public function targetLocation($name){return 'src/Model/'.$name.'Model.php';}}
+class ModelServiceMock implements ModelInterface {public function processCommand($type, ...$arguments){return true;} public function create($name){return true;} public function __construct($modelTemplate, $namespace){} public function targetLocation($name){return 'src/Model/'.$name.'Model.php';}}
 class PhinxApplication2Mock {public function run(){return true;} public function find($name) { return new CommandMock; }}
+class DependencyServiceMock implements GeneratorServiceInterface {public function processCommand($type, ...$arguments){return true;} public function create($name){return true;} public function targetLocation($name){return 'src/Model/'.$name.'Model.php';}}
 
 class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,12 +23,12 @@ class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
         // $phinxApplicationMock->method('run')
         //     ->willReturn(true);
         // $phinxApplicationMock->run();
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplication2Mock), new ModelServiceMock('', ''));
+        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplication2Mock), new ModelServiceMock('', ''), new DependencyServiceMock);
     }
 
     public function testModelExists()
     {
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''));
+        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''), new DependencyServiceMock);
         $composerContent = '{"autoload":{"psr-4": {"Project1\\\": "src/"}}}';
         $modelContent = '<?php namespace Project1\Model; class Foo {}';
         chdir(__DIR__.'/../output');
@@ -45,7 +47,7 @@ class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testModelNotExists()
     {
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''));
+        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''), new DependencyServiceMock);
         $composerContent = '{"autoload":{"psr-4": {"Project2\\\": "src/"}}}';
         chdir(__DIR__.'/../output');
         if (file_exists('project2')) {

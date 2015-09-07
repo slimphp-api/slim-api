@@ -14,17 +14,17 @@ namespace $namespace\Controller;
 
 class $nameController
 {
-    $commands
+$commands
 }
 EOL;
-        $this->controllerService = new ControllerService('indexAction', 'getAction', 'postAction', 'putAction', 'deleteAction', $controllerClass, 'Project0');
+        $this->controllerService = new ControllerService('indexAction', 'getAction', 'postAction', 'putAction', 'deleteAction', $controllerClass, '', 'Project0');
     }
 
     public function testProcessCommand()
     {
         $this->controllerService->processCommand('addAction', 'index', 'post');
         $this->assertEquals(2, count($this->controllerService->commands));
-        $this->assertEquals(['indexAction', 'postAction'], $this->controllerService->commands);
+        $this->assertEquals(['    indexAction', '    postAction'], $this->controllerService->commands);
     }
 
     public function testInvalidProcessCommand()
@@ -81,6 +81,7 @@ namespace Project0\Controller;
 class FooController
 {
     indexAction
+
     postAction
 }
 EOL;

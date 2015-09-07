@@ -3,5 +3,5 @@ namespace $namespace\Controller;
 
 class $nameController
 {
-$commands
+$constructor$commands
 }

@@ -5,25 +5,41 @@ use SlimApi\Interfaces\GeneratorServiceInterface;
 
 class EloquentModelService implements ModelInterface, GeneratorServiceInterface
 {
-    public function __construct($modelTemplate, $namespace) {
+    public $commands = [];
+
+    public function __construct($modelTemplate, $namespace)
+    {
         $this->modelTemplate = $modelTemplate;
         $this->namespace     = $namespace;
     }
 
     public function processCommand($type, ...$arguments)
     {
-
+        switch ($type) {
+            case 'addColumn':
+                $this->addColumn($arguments[0]);
+                break;
+            default:
+                throw new \Exception('Invalid model command.');
+                break;
+        }
     }
 
     public function create($name)
     {
-        $name    = ucfirst($name);
-        $content = strtr($this->modelTemplate, ['$name' => $name, '$namespace' => $this->namespace]);
-        return file_put_contents('src/Model/'.$name.'Model.php', $content);
+        $name     = ucfirst($name);
+        $commands = '"'.implode('", "', $this->commands).'"';
+        $content  = strtr($this->modelTemplate, ['$name' => $name, '$namespace' => $this->namespace, '$fields' => $commands]);
+        return file_put_contents($this->targetLocation($name), $content);
     }
 
     public function targetLocation($name)
     {
-        return 'src/Model/'.$name.'Model.php';
+        return 'src/Model/'.$name.'.php';
+    }
+
+    private function addColumn($name)
+    {
+        $this->commands[] = $name;
     }
 }

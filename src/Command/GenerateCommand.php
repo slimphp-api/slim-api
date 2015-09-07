@@ -69,11 +69,10 @@ class GenerateCommand extends Command
 
         try {
             $generator->process($name, $fields);
-            $output->writeln('Generation completed.');
+            $output->writeln('<info>Generation completed.</info>');
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-
 
         return true;
     }

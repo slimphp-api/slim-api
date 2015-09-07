@@ -44,11 +44,11 @@ class Bar extends Model
 EOT;
 
         $this->eloquentModelService->create('Bar');
-        $this->assertEquals($modelStr, file_get_contents('src/Model/BarModel.php'));
+        $this->assertEquals($modelStr, file_get_contents('src/Model/Bar.php'));
     }
 
     public function testTargetLocation()
     {
-        $this->assertEquals('src/Model/FooModel.php', $this->eloquentModelService->targetLocation('Foo'));
+        $this->assertEquals('src/Model/Foo.php', $this->eloquentModelService->targetLocation('Foo'));
     }
 }

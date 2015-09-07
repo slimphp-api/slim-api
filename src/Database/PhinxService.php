@@ -35,7 +35,7 @@ class PhinxService implements DatabaseInterface, GeneratorServiceInterface
                 $this->finalise();
                 break;
             default:
-                throw new \Exception('Invalid migration type.');
+                throw new \Exception('Invalid migration command.');
                 break;
         }
     }

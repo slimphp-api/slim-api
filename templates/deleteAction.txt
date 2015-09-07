@@ -1,0 +1,5 @@
+public function deleteAction($request, $response, $args)
+{
+    $model = $this->model->findOrFail($args['id']);
+    $model->delete();
+}

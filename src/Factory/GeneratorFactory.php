@@ -18,6 +18,9 @@ class GeneratorFactory
             case 'controller':
                 $generator = $this->generators['controller'];
                 break;
+            case 'scaffold':
+                $generator = $this->generators['scaffold'];
+                break;
         }
         return $generator;
     }

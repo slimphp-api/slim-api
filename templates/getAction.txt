@@ -1,0 +1,6 @@
+public function getAction($request, $response, $args)
+{
+    $model = $this->model->findOrFail($args['id']);
+    $response->write($model);
+    return $response;
+}
