@@ -7,12 +7,13 @@ use SlimApi\Interfaces\GeneratorServiceInterface;
 
 class RouteServiceMock implements GeneratorServiceInterface {public function processCommand($type, ...$arguments){} public function create($name){} public function targetLocation($name){}}
 class ControllerServiceMock implements ControllerInterface {public $commands = []; public function create($name){} public function processCommand($type, $action){$this->commands[] = $action;} public function targetLocation($name){return 'src/Controller/'.$name.'Controller.php';}}
+class DependencyServiceMock1 implements GeneratorServiceInterface {public function processCommand($type, ...$arguments){return true;} public function create($name){return true;} public function targetLocation($name){return 'src/Model/'.$name.'Model.php';}}
 
 class ControllerGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->controllerGenerator = new ControllerGenerator(new ControllerServiceMock, new RouteServiceMock);
+        $this->controllerGenerator = new ControllerGenerator(new ControllerServiceMock, new RouteServiceMock, new DependencyServiceMock1);
     }
 
     public function testInvalidAction()

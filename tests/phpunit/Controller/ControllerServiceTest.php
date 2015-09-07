@@ -17,7 +17,7 @@ class $nameController
 $commands
 }
 EOL;
-        $this->controllerService = new ControllerService('indexAction', 'getAction', 'postAction', 'putAction', 'deleteAction', $controllerClass, 'Project0');
+        $this->controllerService = new ControllerService('indexAction', 'getAction', 'postAction', 'putAction', 'deleteAction', $controllerClass, '', 'Project0');
     }
 
     public function testProcessCommand()
