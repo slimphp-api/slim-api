@@ -1,3 +1,3 @@
-$container['controller.$name'] = function($container) {
-    return new \$namespace\Controller\$nameController($container->get('model.$name'));
+$container[\$namespace\Controller\$nameController::class] = function($container) {
+    return new \$namespace\Controller\$nameController($container->get('$namespace\Model\$name'));
 };

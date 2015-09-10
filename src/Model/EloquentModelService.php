@@ -29,7 +29,7 @@ class EloquentModelService implements ModelInterface, GeneratorServiceInterface
     {
         $name     = ucfirst($name);
         $commands = '"'.implode('", "', $this->commands).'"';
-        $content  = strtr($this->modelTemplate, ['$name' => $name, '$namespace' => $this->namespace, '$fields' => $commands]);
+        $content  = strtr($this->modelTemplate, ['$lowername' => strtolower($name), '$name' => $name, '$namespace' => $this->namespace, '$fields' => $commands]);
         return file_put_contents($this->targetLocation($name), $content);
     }
 
