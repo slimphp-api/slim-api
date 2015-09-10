@@ -33,7 +33,7 @@ class RouteService implements GeneratorServiceInterface
     public function create($name)
     {
         $content = PHP_EOL.PHP_EOL.implode(PHP_EOL, $this->commands);
-        $content = strtr($content, ['$route' => '/'.$name, '$name' => $name]);
+        $content = strtr($content, ['$route' => '/'.strtolower($name), '$name' => $name]);
         return file_put_contents($this->targetLocation($name), $content, FILE_APPEND);
     }
 
@@ -48,27 +48,27 @@ class RouteService implements GeneratorServiceInterface
             case 'index':
                 $methodMap          = ['GET'];
                 $realRoute          = '$route';
-                $controllerCallable = $this->controllerLocation.':index';
+                $controllerCallable = $this->controllerLocation.':indexAction';
                 break;
             case 'get':
                 $methodMap          = ['GET'];
                 $realRoute          = '$route/{id}';
-                $controllerCallable = $this->controllerLocation.':get';
+                $controllerCallable = $this->controllerLocation.':getAction';
                 break;
             case 'post':
                 $methodMap          = ['POST'];
                 $realRoute          = '$route';
-                $controllerCallable = $this->controllerLocation.':post';
+                $controllerCallable = $this->controllerLocation.':postAction';
                 break;
             case 'put':
                 $methodMap          = ['POST', 'PUT'];
                 $realRoute          = '$route/{id}';
-                $controllerCallable = $this->controllerLocation.':put';
+                $controllerCallable = $this->controllerLocation.':putAction';
                 break;
             case 'delete':
                 $methodMap          = ['DELETE'];
                 $realRoute          = '$route/{id}';
-                $controllerCallable = $this->controllerLocation.':delete';
+                $controllerCallable = $this->controllerLocation.':deleteAction';
                 break;
             default:
                 throw new \Exception('Invalid method.'.$method);

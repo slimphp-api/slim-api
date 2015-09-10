@@ -1,3 +1,3 @@
-$container['model.$name'] = function($container) {
+$container[\$namespace\Model\$name::class] = function($container) {
     return new \$namespace\Model\$name;
 };

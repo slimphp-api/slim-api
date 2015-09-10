@@ -64,42 +64,42 @@ class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testSimpleProcess()
     {
-        $expected = ['$table = $this->table("Foo");', '$table->addColumn("col1", "integer");', '$table->create();'];
+        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer");', '$table->create();'];
         $this->modelGenerator->process('Foo', ['col1:integer']);
         $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
     }
 
     public function testLimitProcess()
     {
-        $expected = ['$table = $this->table("Foo");', '$table->addColumn("col1", "integer", ["limit" => 30]);', '$table->create();'];
+        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["limit" => 30]);', '$table->create();'];
         $this->modelGenerator->process('Foo', ['col1:integer:30']);
         $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
     }
 
     public function testNullableProcess()
     {
-        $expected = ['$table = $this->table("Foo");', '$table->addColumn("col1", "integer", ["null" => false]);', '$table->create();'];
+        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["null" => false]);', '$table->create();'];
         $this->modelGenerator->process('Foo', ['col1:integer::false']);
         $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
     }
 
     public function testUniqueProcess()
     {
-        $expected = ['$table = $this->table("Foo");', '$table->addColumn("col1", "integer", ["unique" => true]);', '$table->create();'];
+        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["unique" => true]);', '$table->create();'];
         $this->modelGenerator->process('Foo', ['col1:integer:::true']);
         $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
     }
 
     public function testLimitUniqueProcess()
     {
-        $expected = ['$table = $this->table("Foo");', '$table->addColumn("col1", "integer", ["limit" => 30, "unique" => true]);', '$table->create();'];
+        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["limit" => 30, "unique" => true]);', '$table->create();'];
         $this->modelGenerator->process('Foo', ['col1:integer:30::true']);
         $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
     }
 
     public function testAllProcess()
     {
-        $expected = ['$table = $this->table("Foo");', '$table->addColumn("col1", "integer", ["limit" => 30, "null" => false, "unique" => true]);', '$table->create();'];
+        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["limit" => 30, "null" => false, "unique" => true]);', '$table->create();'];
         $this->modelGenerator->process('Foo', ['col1:integer:30:false:true']);
         $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
     }

@@ -25,7 +25,7 @@ class PhinxService implements DatabaseInterface, GeneratorServiceInterface
     {
         switch ($type) {
             case 'create':
-                $this->createTable($arguments[0]);
+                $this->createTable(strtolower($arguments[0]));
                 break;
             case 'addColumn':
                 $arguments = array_pad($arguments, 5, null);

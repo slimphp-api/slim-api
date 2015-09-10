@@ -15,8 +15,7 @@ $container['database.config'] = function($container) {
 };
 
 $container['environment.name'] = function($container) {
-    $name = getenv('ENV') ?: 'development';
-    return $name;
+    return (getenv('ENV') ?: 'development');
 };
 
 $container['database.configForEloquent'] = function($container) {

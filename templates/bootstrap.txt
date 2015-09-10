@@ -11,4 +11,6 @@ require 'middleware.php';
 // Register routes
 require 'routes.php';
 
+$container['database.connectEloquent'];
+
 $app->run();
