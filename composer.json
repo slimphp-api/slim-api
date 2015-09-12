@@ -5,7 +5,8 @@
         "php": ">5.6",
         "pimple/pimple": "3.*",
         "symfony/console": "2.*",
-        "robmorgan/phinx": "0.*"
+        "slimphp-api/slim-phinx": "dev-master",
+        "slim/slim": "3.*-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",
