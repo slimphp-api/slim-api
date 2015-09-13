@@ -10,19 +10,12 @@ $container['templateDir'] = function($container) {
     return realpath(__DIR__.'/../templates');
 };
 
-$container['model.structure'] = function($container) {
-    return file_get_contents($container->get('templateDir').'/ModelTemplate.txt');
-};
-
-$container['services.model'] = function($container) {
-    return new \SlimApi\Model\EloquentModelService($container->get('model.structure'), $container->get('namespace.root'));
-};
-
 $container['services.skeleton.structure'] = function($container) {
-    // I thought long and hard about to decalre dependencies
+    // I thought long and hard about how to declare dependencies
     // should there be one for each type? controllers, services, models?
     // in the end it's not going to be managed by the api generators,
     // so a generic starting place for people to begin with seemed sensible
+    $apiConfig        = file_get_contents($container->get('templateDir').'/apiConfig.txt');
     $index            = file_get_contents($container->get('templateDir').'/index.txt');
     $dependencies     = file_get_contents($container->get('templateDir').'/dependencies.txt');
     $middleware       = file_get_contents($container->get('templateDir').'/middleware.txt');
@@ -35,7 +28,7 @@ $container['services.skeleton.structure'] = function($container) {
     $phpunitbootstrap = file_get_contents($container->get('templateDir').'/phpunitbootstrap.txt');
 
     return [
-        'config' => [],
+        'config' => ['slim-api.config.php' => $apiConfig],
         'migrations' => [],
         'public' => [
             'index.php' => $index
@@ -65,20 +58,20 @@ $container['services.skeleton.structure'] = function($container) {
     ];
 };
 
-$container['services.skeleton'] = function($container) {
+$container['SlimApi\Skeleton\SkeletonInterface'] = function($container) {
     return new SlimApi\Skeleton\SkeletonService($container->get('services.skeleton.structure'));
 };
 
-$container['commands.init'] = function($container) {
-    return new SlimApi\Command\InitCommand($container->get('services.skeleton'), $container->get('services.database'));
+$container['SlimApi\Command\InitCommand'] = function($container) {
+    if (!$container->has('SlimApi\Database\DatabaseInterface')) {
+        $phinxModule = new \SlimPhinx\Module;
+        $phinxModule->loadDependencies($container);
+    }
+    return new SlimApi\Command\InitCommand($container->get('SlimApi\Skeleton\SkeletonInterface'), $container->get('SlimApi\Database\DatabaseInterface'));
 };
 
-$container['phinxApplication'] = function($container) {
-    return new Phinx\Console\PhinxApplication;
-};
-
-$container['services.database'] = function($container) {
-    return new SlimApi\Database\PhinxService($container->get('phinxApplication'));
+$container['SlimApi\Command\InitDbCommand'] = function($container) {
+    return new SlimApi\Command\InitDbCommand($container->get('SlimApi\Database\DatabaseInterface'));
 };
 
 $container['services.controller'] = function($container) {
@@ -108,47 +101,73 @@ $container['services.controller.empty'] = function($container) {
     return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, '', $container->get('namespace.root'));
 };
 
-$container['services.route'] = function($container) {
+$container['SlimApi\Service\RouteService'] = function($container) {
     return new SlimApi\Service\RouteService('src/routes.php', file_get_contents($container->get('templateDir').'/route.txt'), $container->get('namespace.root'));
 };
 
-$container['services.dependency'] = function($container) {
+$container['SlimApi\Service\DependencyService'] = function($container) {
     return new SlimApi\Service\DependencyService('src/dependencies.php', file_get_contents($container->get('templateDir').'/ControllerDependency.txt'), file_get_contents($container->get('templateDir').'/ModelDependency.txt'), $container->get('namespace.root'));
 };
 
-$container['factory.generator.model'] = function($container) {
-    return new SlimApi\Generator\ModelGenerator($container->get('services.database'), $container->get('services.model'), $container->get('services.dependency'));
+$container['SlimApi\Generator\ModelGenerator'] = function($container) {
+    return new SlimApi\Generator\ModelGenerator($container->get('SlimApi\Database\DatabaseInterface'), $container->get('SlimApi\Model\ModelInterface'), $container->get('SlimApi\Service\DependencyService'));
 };
 
 $container['factory.generator.controller.empty'] = function($container) {
-    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.empty'), $container->get('services.route'), $container->get('services.dependency'));
+    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.empty'), $container->get('SlimApi\Service\RouteService'), $container->get('SlimApi\Service\DependencyService'));
 };
 
 $container['factory.generator.controller.populated'] = function($container) {
-    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.populated'), $container->get('services.route'), $container->get('services.dependency'));
+    return new SlimApi\Generator\ControllerGenerator($container->get('services.controller.populated'), $container->get('SlimApi\Service\RouteService'), $container->get('SlimApi\Service\DependencyService'));
 };
 
-$container['factory.generator.scaffold'] = function($container) {
-    return new SlimApi\Generator\ScaffoldGenerator($container->get('factory.generator.controller.populated'), $container->get('factory.generator.model'));
+$container['SlimApi\Generator\ScaffoldGenerator'] = function($container) {
+    return new SlimApi\Generator\ScaffoldGenerator($container->get('factory.generator.controller.populated'), $container->get('SlimApi\Generator\ModelGenerator'));
 };
 
-$container['factory.generator'] = function($container) {
+$container['SlimApi\Factory\GeneratorFactory'] = function($container) {
     return new SlimApi\Factory\GeneratorFactory([
-        'model'      => $container->get('factory.generator.model'),
+        'model'      => $container->get('SlimApi\Generator\ModelGenerator'),
         'controller' => $container->get('factory.generator.controller.empty'),
-        'scaffold'   => $container->get('factory.generator.scaffold'),
+        'scaffold'   => $container->get('SlimApi\Generator\ScaffoldGenerator'),
     ]);
 };
 
-$container['commands.generate'] = function($container) {
-    return new SlimApi\Command\GenerateCommand($container->get('factory.generator'));
+$container['SlimApi\Command\GenerateCommand'] = function($container) {
+    return new SlimApi\Command\GenerateCommand($container->get('SlimApi\Factory\GeneratorFactory'));
+};
+
+$container['SlimApi\Service\ModuleService'] = function($container) {
+    return new SlimApi\Service\ModuleService($container);
+};
+
+$container['api.config'] = function($container) {
+    $config = SlimApi\Service\ConfigService::fetch();
+    if (!array_key_exists('slim-api', $config) ||
+        !array_key_exists('modules', $config['slim-api']) ||
+        !array_key_exists('SlimApi\Database\DatabaseInterface', $config['slim-api']['modules']) ||
+        !array_key_exists('SlimApi\Model\ModelInterface', $config['slim-api']['modules'])
+    ) {
+        throw new UnexpectedValueException("Invalid configuration.");
+    }
+    $moduleService = $container->get('SlimApi\Service\ModuleService');
+    foreach ($config['slim-api']['modules'] as $moduleNamespace) {
+        $moduleService->load($moduleNamespace);
+    }
 };
 
 $container['commands'] = function ($container) {
-    return [
-        'init'     => $container->get('commands.init'),
-        'generate' => $container->get('commands.generate'),
-    ];
+    $commands = [];
+    try {
+        $config = $container->get('api.config');
+        $commands['init:db'] = $container->get('SlimApi\Command\InitDbCommand');
+        $commands['generate'] = $container->get('SlimApi\Command\GenerateCommand');
+    } catch (UnexpectedValueException $e) {
+        // ignore
+        $commands = [];
+    }
+    $commands['init'] = $container->get('SlimApi\Command\InitCommand');
+    return $commands;
 };
 
 $container['application'] = function($container) {

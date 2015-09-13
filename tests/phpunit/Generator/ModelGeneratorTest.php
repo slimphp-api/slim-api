@@ -1,12 +1,13 @@
 <?php
 namespace SlimApiTest\Generator;
 
-use SlimApi\Database\PhinxService;
+use SlimApi\Database\DatabaseInterface;
 use SlimApi\Generator\ModelGenerator;
 use SlimApi\Interfaces\GeneratorServiceInterface;
 use SlimApi\Model\ModelInterface;
 use org\bovigo\vfs\vfsStream;
 
+class PhinxService implements DatabaseInterface, GeneratorServiceInterface {public function init($directory){} public function processCommand($type, ...$arguments){} public function create($name){} public function targetLocation($name){}}
 class PhinxApplicationMock {public function run(){return true;} public function find($name) { $class = '\Phinx\Console\Command\\'.ucfirst($name); return new $class; }}
 class CommandMock {public function run(){return 0;}}
 class ModelServiceMock implements ModelInterface {public function processCommand($type, ...$arguments){return true;} public function create($name){return true;} public function __construct($modelTemplate, $namespace){} public function targetLocation($name){return 'src/Model/'.$name.'Model.php';}}
@@ -60,47 +61,5 @@ class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
         chdir('project2/');
 
         $this->assertTrue($this->modelGenerator->validate('Foo', []));
-    }
-
-    public function testSimpleProcess()
-    {
-        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer");', '$table->create();'];
-        $this->modelGenerator->process('Foo', ['col1:integer']);
-        $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
-    }
-
-    public function testLimitProcess()
-    {
-        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["limit" => 30]);', '$table->create();'];
-        $this->modelGenerator->process('Foo', ['col1:integer:30']);
-        $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
-    }
-
-    public function testNullableProcess()
-    {
-        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["null" => false]);', '$table->create();'];
-        $this->modelGenerator->process('Foo', ['col1:integer::false']);
-        $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
-    }
-
-    public function testUniqueProcess()
-    {
-        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["unique" => true]);', '$table->create();'];
-        $this->modelGenerator->process('Foo', ['col1:integer:::true']);
-        $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
-    }
-
-    public function testLimitUniqueProcess()
-    {
-        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["limit" => 30, "unique" => true]);', '$table->create();'];
-        $this->modelGenerator->process('Foo', ['col1:integer:30::true']);
-        $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
-    }
-
-    public function testAllProcess()
-    {
-        $expected = ['$table = $this->table("foo");', '$table->addColumn("col1", "integer", ["limit" => 30, "null" => false, "unique" => true]);', '$table->create();'];
-        $this->modelGenerator->process('Foo', ['col1:integer:30:false:true']);
-        $this->assertEquals($expected, $this->modelGenerator->migrationService->commands);
     }
 }
