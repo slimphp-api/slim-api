@@ -3,11 +3,17 @@ namespace SlimApi\Skeleton;
 
 class SkeletonService implements SkeletonInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($structure)
     {
         $this->structure = $structure;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create($path, $name, $structure = false)
     {
         if (false === $structure) {

@@ -3,6 +3,11 @@ namespace SlimApi\Service;
 
 class ConfigService
 {
+    /**
+     * Fetches configuration from the running app
+     *
+     * @return array
+     */
     public static function fetch()
     {
         $config = [];

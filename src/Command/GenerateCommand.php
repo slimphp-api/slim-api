@@ -10,12 +10,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateCommand extends Command
 {
+    /**
+     * @param mixed $generatorFactory
+     *
+     * @return
+     */
     public function __construct($generatorFactory)
     {
         parent::__construct();
         $this->generatorFactory = $generatorFactory;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -40,6 +48,9 @@ class GenerateCommand extends Command
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $type = $input->getArgument('type');

@@ -7,6 +7,13 @@ class RouteService implements GeneratorServiceInterface
 {
     public $commands = [];
 
+    /**
+     * @param string $routerFileLocation
+     * @param string $routeTemplate
+     * @param string $namespaceRoot
+     *
+     * @return
+     */
     public function __construct($routerFileLocation, $routeTemplate, $namespaceRoot)
     {
         $this->template           = $routeTemplate;
@@ -14,6 +21,9 @@ class RouteService implements GeneratorServiceInterface
         $this->controllerLocation = $namespaceRoot.'\Controller\$nameController';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function processCommand($type, ...$arguments)
     {
         // $arguments is method1, method2 etc
@@ -30,6 +40,9 @@ class RouteService implements GeneratorServiceInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create($name)
     {
         $content = PHP_EOL.PHP_EOL.implode(PHP_EOL, $this->commands);
@@ -37,11 +50,21 @@ class RouteService implements GeneratorServiceInterface
         return file_put_contents($this->targetLocation($name), $content, FILE_APPEND);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function targetLocation($name)
     {
         return $this->routerFileLocation;
     }
 
+    /**
+     * Process the requrested method into a route template
+     *
+     * @param string $method
+     *
+     * @return void
+     */
     private function addRoute($method)
     {
         switch ($method) {
