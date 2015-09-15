@@ -9,6 +9,19 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
     private $templates = [];
     private $namespace = '';
 
+    /**
+     *
+     * @param string $indexTemplate
+     * @param string $getTemplate
+     * @param string $postTemplate
+     * @param string $putTemplate
+     * @param string $deleteTemplate
+     * @param string $classTemplate
+     * @param string $constructorTemplate
+     * @param string $namespace
+     *
+     * @return
+     */
     public function __construct($indexTemplate, $getTemplate, $postTemplate, $putTemplate, $deleteTemplate, $classTemplate, $constructorTemplate, $namespace)
     {
         $this->templates['index']       = $indexTemplate;
@@ -21,6 +34,9 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
         $this->namespace                = $namespace;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function processCommand($type, ...$arguments)
     {
         switch ($type) {
@@ -35,6 +51,9 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create($name)
     {
 
@@ -55,11 +74,21 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
         return file_put_contents($this->targetLocation($name), $content);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function targetLocation($name)
     {
         return 'src/Controller/'.$name.'Controller.php';
     }
 
+    /**
+     * Parses and adds a controller action
+     *
+     * @param string $actionName
+     *
+     * @return
+     */
     private function addAction($actionName)
     {
         $template         = $this->templates[$actionName];

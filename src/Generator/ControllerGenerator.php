@@ -8,6 +8,14 @@ class ControllerGenerator implements GeneratorInterface
 {
     private $validActions = ['index', 'get', 'post', 'put', 'delete'];
 
+    /**
+     *
+     * @param ControllerInterface $controllerService
+     * @param GeneratorServiceInterface $routeService
+     * @param GeneratorServiceInterface $dependencyService
+     *
+     * @return void
+     */
     public function __construct(ControllerInterface $controllerService, GeneratorServiceInterface $routeService, GeneratorServiceInterface $dependencyService)
     {
         $this->controllerService = $controllerService;
@@ -15,6 +23,9 @@ class ControllerGenerator implements GeneratorInterface
         $this->dependencyService = $dependencyService;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validate($name, $fields)
     {
         $name = ucfirst($name);
@@ -31,6 +42,9 @@ class ControllerGenerator implements GeneratorInterface
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function process($name, $fields)
     {
         $name = ucfirst($name);
@@ -50,6 +64,13 @@ class ControllerGenerator implements GeneratorInterface
         $this->dependencyService->create($name);
     }
 
+    /**
+     * Checks if controller exists!
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
     private function controllerExists($name)
     {
         return is_file($this->controllerService->targetLocation($name));

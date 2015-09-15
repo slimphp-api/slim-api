@@ -7,6 +7,14 @@ use SlimApi\Interfaces\GeneratorServiceInterface;
 
 class ModelGenerator implements GeneratorInterface
 {
+    /**
+     *
+     * @param DatabaseInterface $migrationService
+     * @param ModelInterface $modelService
+     * @param GeneratorServiceInterface $dependencyService
+     *
+     * @return
+     */
     public function __construct(DatabaseInterface $migrationService, ModelInterface $modelService, GeneratorServiceInterface $dependencyService)
     {
         $this->migrationService  = $migrationService;
@@ -14,6 +22,9 @@ class ModelGenerator implements GeneratorInterface
         $this->dependencyService = $dependencyService;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validate($name, $fields)
     {
         $name = ucfirst($name);
@@ -23,6 +34,9 @@ class ModelGenerator implements GeneratorInterface
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function process($name, $fields)
     {
         $name = ucfirst($name);
@@ -31,6 +45,14 @@ class ModelGenerator implements GeneratorInterface
         $this->processCreateDI($name);
     }
 
+    /**
+     * Processes the fields to create the migration
+     *
+     * @param string $name
+     * @param array $fields colon seperated field definitions
+     *
+     * @return void
+     */
     private function processCreateMigration($name, $fields)
     {
         $this->migrationService->processCommand('create', $name);
@@ -48,6 +70,14 @@ class ModelGenerator implements GeneratorInterface
         $this->migrationService->create($name);
     }
 
+    /**
+     * Process the fields to create the model!
+     *
+     * @param mixed $name
+     * @param array $fields colon seperated field definitions
+     *
+     * @return void
+     */
     private function processCreateModel($name, $fields)
     {
         // name:type:limit:null:unique
@@ -59,12 +89,26 @@ class ModelGenerator implements GeneratorInterface
         $this->modelService->create($name);
     }
 
+    /**
+     * Create any dependency injection entries
+     *
+     * @param string $name
+     *
+     * @return
+     */
     private function processCreateDI($name)
     {
         $this->dependencyService->processCommand('injectModel', $name);
         $this->dependencyService->create($name);
     }
 
+    /**
+     * Checks if the model class exists
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
     private function modelExists($name)
     {
         return is_file($this->modelService->targetLocation($name));

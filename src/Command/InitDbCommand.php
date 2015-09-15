@@ -14,12 +14,18 @@ class InitDbCommand extends Command
 {
     public static $successMessage = "Database initiated successfully!";
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(DatabaseInterface $databaseService)
     {
         parent::__construct();
         $this->databaseService = $databaseService;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -28,6 +34,9 @@ class InitDbCommand extends Command
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (false === is_file('composer.json')) {

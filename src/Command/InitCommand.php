@@ -15,6 +15,9 @@ class InitCommand extends Command
     public static $successMessage = "Application correctly created. Don't forget to run composer install!";
     public static $failureMessage = "Application failed to create.";
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(SkeletonInterface $skeletonService, DatabaseInterface $databaseService)
     {
         parent::__construct();
@@ -22,6 +25,9 @@ class InitCommand extends Command
         $this->databaseService = $databaseService;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -41,6 +47,9 @@ class InitCommand extends Command
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name    = ucfirst($input->getArgument('name'));
