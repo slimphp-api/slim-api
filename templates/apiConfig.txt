@@ -2,8 +2,8 @@
 return [
     'slim-api' => [
         'modules' => [
-            'SlimPhinx',
-            'SlimEloquent'
+            'SlimPhinx', //provides migrations
+            'SlimEloquent' //provides ORM
         ]
     ]
 ];
