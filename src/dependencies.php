@@ -1,11 +1,6 @@
 <?php
 $container = new Slim\Container;
 
-$container['namespace.root'] = function($container) {
-    // alternativly load composer.json?
-    return ucfirst(basename(getcwd()));
-};
-
 $container['templateDir'] = function($container) {
     return realpath(__DIR__.'/../templates');
 };
