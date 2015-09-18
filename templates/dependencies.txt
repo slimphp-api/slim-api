@@ -2,6 +2,10 @@
 // DIC configuration
 $container = $app->getContainer();
 
+$container['namespace.root'] = function($container) {
+    return ucfirst($name);
+};
+
 $container['database.config.file'] = function($container) {
     $cwd = getcwd();
     $locator = new Symfony\Component\Config\FileLocator([$cwd . DIRECTORY_SEPARATOR]);

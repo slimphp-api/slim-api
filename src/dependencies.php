@@ -1,11 +1,6 @@
 <?php
 $container = new Slim\Container;
 
-$container['namespace.root'] = function($container) {
-    // alternativly load composer.json?
-    return ucfirst(basename(getcwd()));
-};
-
 $container['templateDir'] = function($container) {
     return realpath(__DIR__.'/../templates');
 };
@@ -144,9 +139,7 @@ $container['SlimApi\Service\ModuleService'] = function($container) {
 $container['api.config'] = function($container) {
     $config = SlimApi\Service\ConfigService::fetch();
     if (!array_key_exists('slim-api', $config) ||
-        !array_key_exists('modules', $config['slim-api']) ||
-        !array_key_exists('SlimApi\Database\DatabaseInterface', $config['slim-api']['modules']) ||
-        !array_key_exists('SlimApi\Model\ModelInterface', $config['slim-api']['modules'])
+        !array_key_exists('modules', $config['slim-api'])
     ) {
         throw new UnexpectedValueException("Invalid configuration.");
     }

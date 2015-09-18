@@ -1,2 +1,9 @@
 <?php
-return ['slim-api' => ['modules' => ['SlimApi\Database\DatabaseInterface' => 'SlimPhinx', 'SlimApi\Model\ModelInterface' => 'SlimEloquent']]];
+return [
+    'slim-api' => [
+        'modules' => [
+            'SlimPhinx', //provides migrations
+            'SlimEloquent' //provides ORM
+        ]
+    ]
+];
