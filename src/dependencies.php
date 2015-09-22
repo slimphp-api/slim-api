@@ -1,5 +1,5 @@
 <?php
-$container = new Slim\Container;
+$container = new Slim\Container(SlimApi\Service\ConfigService::fetch());
 
 $container['templateDir'] = function($container) {
     return realpath(__DIR__.'/../templates');
@@ -82,7 +82,7 @@ $container['services.controller.populated'] = function($container) {
     $controllerClass = file_get_contents($container->get('templateDir').'/ControllerClass.txt');
     $controllerCons  = file_get_contents($container->get('templateDir').'/ControllerConstructor.txt');
     $service         = $container->get('services.controller');
-    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $controllerCons, $container->get('namespace.root'));
+    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $controllerCons, $container->get('namespace'));
 };
 
 $container['services.controller.empty'] = function($container) {
@@ -93,15 +93,15 @@ $container['services.controller.empty'] = function($container) {
     $deleteAction    = file_get_contents($container->get('templateDir').'/emptyDeleteAction.txt');
     $controllerClass = file_get_contents($container->get('templateDir').'/ControllerClass.txt');
     $service         = $container->get('services.controller');
-    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, '', $container->get('namespace.root'));
+    return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, '', $container->get('namespace'));
 };
 
 $container['SlimApi\Service\RouteService'] = function($container) {
-    return new SlimApi\Service\RouteService('src/routes.php', file_get_contents($container->get('templateDir').'/route.txt'), $container->get('namespace.root'));
+    return new SlimApi\Service\RouteService('src/routes.php', file_get_contents($container->get('templateDir').'/route.txt'), $container->get('namespace'));
 };
 
 $container['SlimApi\Service\DependencyService'] = function($container) {
-    return new SlimApi\Service\DependencyService('src/dependencies.php', file_get_contents($container->get('templateDir').'/ControllerDependency.txt'), file_get_contents($container->get('templateDir').'/ModelDependency.txt'), $container->get('namespace.root'));
+    return new SlimApi\Service\DependencyService('src/dependencies.php', file_get_contents($container->get('templateDir').'/ControllerDependency.txt'), file_get_contents($container->get('templateDir').'/ModelDependency.txt'), $container->get('namespace'));
 };
 
 $container['SlimApi\Generator\ModelGenerator'] = function($container) {
