@@ -132,6 +132,10 @@ $container['SlimApi\Command\GenerateCommand'] = function($container) {
     return new SlimApi\Command\GenerateCommand($container->get('SlimApi\Factory\GeneratorFactory'));
 };
 
+$container['SlimApi\Command\RoutesCommand'] = function($container) {
+    return new SlimApi\Command\RoutesCommand;
+};
+
 $container['SlimApi\Service\ModuleService'] = function($container) {
     return new SlimApi\Service\ModuleService($container);
 };
@@ -153,8 +157,9 @@ $container['commands'] = function ($container) {
     $commands = [];
     try {
         $config = $container->get('api.config');
-        $commands['init:db'] = $container->get('SlimApi\Command\InitDbCommand');
+        $commands['init:db']  = $container->get('SlimApi\Command\InitDbCommand');
         $commands['generate'] = $container->get('SlimApi\Command\GenerateCommand');
+        $commands['routes']   = $container->get('SlimApi\Command\RoutesCommand');
     } catch (UnexpectedValueException $e) {
         // ignore
         $commands = [];
