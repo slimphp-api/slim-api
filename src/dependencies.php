@@ -132,6 +132,10 @@ $container['SlimApi\Command\Generate\GenerateScaffoldCommand'] = function($conta
     return new SlimApi\Command\Generate\GenerateScaffoldCommand($container->get('SlimApi\Generator\ScaffoldGenerator'));
 };
 
+$container['SlimApi\Command\RoutesCommand'] = function($container) {
+    return new SlimApi\Command\RoutesCommand;
+};
+
 $container['SlimApi\Service\ModuleService'] = function($container) {
     return new SlimApi\Service\ModuleService($container);
 };
@@ -157,6 +161,7 @@ $container['commands'] = function ($container) {
         $commands['generate:controller'] = $container->get('SlimApi\Command\Generate\GenerateControllerCommand');
         $commands['generate:model']      = $container->get('SlimApi\Command\Generate\GenerateModelCommand');
         $commands['generate:scaffold']   = $container->get('SlimApi\Command\Generate\GenerateScaffoldCommand');
+        $commands['routes']              = $container->get('SlimApi\Command\RoutesCommand');
     } catch (UnexpectedValueException $e) {
         // ignore
         $commands = [];
