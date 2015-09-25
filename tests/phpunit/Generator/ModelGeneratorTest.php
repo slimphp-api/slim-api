@@ -16,50 +16,23 @@ class DependencyServiceMock implements GeneratorServiceInterface {public functio
 
 class ModelGeneratorTest extends \PHPUnit_Framework_TestCase
 {
+    use \SlimApiTest\DirectoryTrait;
     protected function setUp()
     {
-        // $phinxApplicationMock = $this->getMockBuilder('stdClass')
-        //     ->disableOriginalConstructor()
-        //     ->getMock();
-        // $phinxApplicationMock->method('run')
-        //     ->willReturn(true);
-        // $phinxApplicationMock->run();
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplication2Mock), new ModelServiceMock('', ''), new DependencyServiceMock);
+        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''), new DependencyServiceMock);
+        $this->setupDirectory();
     }
 
     public function testModelExists()
     {
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''), new DependencyServiceMock);
-        $composerContent = '{"autoload":{"psr-4": {"Project1\\\": "src/"}}}';
-        $modelContent = '<?php namespace Project1\Model; class Foo {}';
-        chdir(__DIR__.'/../output');
-        if (file_exists('project1')) {
-            exec('rm -rf project1');
-        }
-        mkdir('project1');
-        mkdir('project1/src');
-        mkdir('project1/src/Model');
-        file_put_contents('project1/composer.json', $composerContent);
-        file_put_contents('project1/src/Model/FooModel.php', $modelContent);
-        chdir('project1/');
+        $modelContent = '<?php namespace Project0\Model; class Foo {}';
+        file_put_contents('src/Model/FooModel.php', $modelContent);
 
         $this->assertFalse($this->modelGenerator->validate('Foo', []));
     }
 
     public function testModelNotExists()
     {
-        $this->modelGenerator = new ModelGenerator(new PhinxService(new PhinxApplicationMock), new ModelServiceMock('', ''), new DependencyServiceMock);
-        $composerContent = '{"autoload":{"psr-4": {"Project2\\\": "src/"}}}';
-        chdir(__DIR__.'/../output');
-        if (file_exists('project2')) {
-            exec('rm -rf project2');
-        }
-        mkdir('project2');
-        mkdir('project2/src');
-        mkdir('project2/src/Model');
-        file_put_contents('project2/composer.json', $composerContent);
-        chdir('project2/');
-
         $this->assertTrue($this->modelGenerator->validate('Foo', []));
     }
 }

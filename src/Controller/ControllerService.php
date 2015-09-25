@@ -10,7 +10,6 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
     private $namespace = '';
 
     /**
-     *
      * @param string $indexTemplate
      * @param string $getTemplate
      * @param string $postTemplate
@@ -19,8 +18,6 @@ class ControllerService implements ControllerInterface, GeneratorServiceInterfac
      * @param string $classTemplate
      * @param string $constructorTemplate
      * @param string $namespace
-     *
-     * @return
      */
     public function __construct($indexTemplate, $getTemplate, $postTemplate, $putTemplate, $deleteTemplate, $classTemplate, $constructorTemplate, $namespace)
     {

@@ -69,7 +69,7 @@ $container['SlimApi\Command\InitDbCommand'] = function($container) {
     return new SlimApi\Command\InitDbCommand($container->get('SlimApi\Database\DatabaseInterface'));
 };
 
-$container['services.controller'] = function($container) {
+$container['SlimApi\Controller\ControllerInterface'] = function($container) {
     return 'SlimApi\Controller\ControllerService';
 };
 
@@ -81,7 +81,7 @@ $container['services.controller.populated'] = function($container) {
     $deleteAction    = file_get_contents($container->get('templateDir').'/deleteAction.txt');
     $controllerClass = file_get_contents($container->get('templateDir').'/ControllerClass.txt');
     $controllerCons  = file_get_contents($container->get('templateDir').'/ControllerConstructor.txt');
-    $service         = $container->get('services.controller');
+    $service         = $container->get('SlimApi\Controller\ControllerInterface');
     return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, $controllerCons, $container->get('namespace'));
 };
 
@@ -92,7 +92,7 @@ $container['services.controller.empty'] = function($container) {
     $putAction       = file_get_contents($container->get('templateDir').'/emptyPutAction.txt');
     $deleteAction    = file_get_contents($container->get('templateDir').'/emptyDeleteAction.txt');
     $controllerClass = file_get_contents($container->get('templateDir').'/ControllerClass.txt');
-    $service         = $container->get('services.controller');
+    $service         = $container->get('SlimApi\Controller\ControllerInterface');
     return new $service($indexAction, $getAction, $postAction, $putAction, $deleteAction, $controllerClass, '', $container->get('namespace'));
 };
 
@@ -120,16 +120,16 @@ $container['SlimApi\Generator\ScaffoldGenerator'] = function($container) {
     return new SlimApi\Generator\ScaffoldGenerator($container->get('factory.generator.controller.populated'), $container->get('SlimApi\Generator\ModelGenerator'));
 };
 
-$container['SlimApi\Factory\GeneratorFactory'] = function($container) {
-    return new SlimApi\Factory\GeneratorFactory([
-        'model'      => $container->get('SlimApi\Generator\ModelGenerator'),
-        'controller' => $container->get('factory.generator.controller.empty'),
-        'scaffold'   => $container->get('SlimApi\Generator\ScaffoldGenerator'),
-    ]);
+$container['SlimApi\Command\Generate\GenerateControllerCommand'] = function($container) {
+    return new SlimApi\Command\Generate\GenerateControllerCommand($container->get('factory.generator.controller.empty'));
 };
 
-$container['SlimApi\Command\GenerateCommand'] = function($container) {
-    return new SlimApi\Command\GenerateCommand($container->get('SlimApi\Factory\GeneratorFactory'));
+$container['SlimApi\Command\Generate\GenerateModelCommand'] = function($container) {
+    return new SlimApi\Command\Generate\GenerateModelCommand($container->get('SlimApi\Generator\ModelGenerator'));
+};
+
+$container['SlimApi\Command\Generate\GenerateScaffoldCommand'] = function($container) {
+    return new SlimApi\Command\Generate\GenerateScaffoldCommand($container->get('SlimApi\Generator\ScaffoldGenerator'));
 };
 
 $container['SlimApi\Command\RoutesCommand'] = function($container) {
@@ -156,10 +156,12 @@ $container['api.config'] = function($container) {
 $container['commands'] = function ($container) {
     $commands = [];
     try {
-        $config = $container->get('api.config');
-        $commands['init:db']  = $container->get('SlimApi\Command\InitDbCommand');
-        $commands['generate'] = $container->get('SlimApi\Command\GenerateCommand');
-        $commands['routes']   = $container->get('SlimApi\Command\RoutesCommand');
+        $config                          = $container->get('api.config');
+        $commands['init :db']            = $container->get('SlimApi\Command\InitDbCommand');
+        $commands['generate:controller'] = $container->get('SlimApi\Command\Generate\GenerateControllerCommand');
+        $commands['generate:model']      = $container->get('SlimApi\Command\Generate\GenerateModelCommand');
+        $commands['generate:scaffold']   = $container->get('SlimApi\Command\Generate\GenerateScaffoldCommand');
+        $commands['routes']              = $container->get('SlimApi\Command\RoutesCommand');
     } catch (UnexpectedValueException $e) {
         // ignore
         $commands = [];
