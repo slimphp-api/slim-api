@@ -19,10 +19,6 @@ class RoutesCommandTest extends \PHPUnit_Framework_TestCase
         $this->command = $application->find('routes');
         $this->tester  = new CommandTester($this->command);
         $this->setupDirectory();
-        $routesFileStr = <<<'EOT'
-<?php
-EOT;
-        file_put_contents('src/routes.php', $routesFileStr);
     }
 
     public function testMustComposer()
@@ -32,16 +28,17 @@ EOT;
         $this->tester->execute(['command' => $this->command->getName()]);
     }
 
-    // public function testNoRoutes()
-    // {
-    //     $this->tester->execute(['command' => $this->command->getName()]);
-    //     $this->assertEmpty($this->tester->getDisplay());
-    // }
+    public function testNoRoutes()
+    {
+        $this->tester->execute(['command' => $this->command->getName()]);
+        $this->assertEmpty($this->tester->getDisplay());
+    }
 
     public function testMultipleRoutes()
     {
         $routesFileStr = <<<'EOT'
 <?php
+$app = new \Slim\App;
 $app->map(['GET'], '/bar3', 'Fred\Controller\Bar3Controller:indexAction');
 $app->map(['GET'], '/bar3/{id}', 'Fred\Controller\Bar3Controller:getAction');
 $app->map(['POST'], '/bar3', 'Fred\Controller\Bar3Controller:postAction');
@@ -65,9 +62,6 @@ EOT;
 
     }
 
-    /**
-     * @runInSeparateProcess
-     */
     public function testExecuteException()
     {
         $routesFileStr = <<<'EOT'
