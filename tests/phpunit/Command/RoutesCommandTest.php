@@ -65,6 +65,9 @@ EOT;
 
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testExecuteException()
     {
         $routesFileStr = <<<'EOT'
