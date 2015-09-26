@@ -139,4 +139,16 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->assertEquals(InitCommand::$successMessage, trim($this->tester->getDisplay()));
     }
+
+    public function testExecuteException()
+    {
+        $this->command->databaseService->method('init')->will($this->throwException(new \Exception('Foo exception')));
+
+        $this->tester->execute([
+            'command'  => $this->command->getName(),
+            'name'     => 'Butts',
+            'location' => 'butts',
+        ]);
+        $this->assertEquals('Foo exception'.PHP_EOL, $this->tester->getDisplay());
+    }
 }

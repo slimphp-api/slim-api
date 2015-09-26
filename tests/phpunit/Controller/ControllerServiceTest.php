@@ -14,10 +14,11 @@ namespace $namespace\Controller;
 
 class $nameController
 {
+$constructor
 $commands
 }
 EOL;
-        $this->controllerService = new ControllerService('indexAction', 'getAction', 'postAction', 'putAction', 'deleteAction', $controllerClass, '', 'Project0');
+        $this->controllerService = new ControllerService('indexAction', 'getAction', 'postAction', 'putAction', 'deleteAction', $controllerClass, 'constructor', 'Project0');
     }
 
     public function testProcessCommand()
@@ -42,6 +43,8 @@ namespace Project0\Controller;
 
 class FooController
 {
+    constructor
+
 
 }
 EOL;
@@ -60,6 +63,8 @@ namespace Project0\Controller;
 
 class FooController
 {
+    constructor
+
     indexAction
 }
 EOL;
@@ -80,6 +85,8 @@ namespace Project0\Controller;
 
 class FooController
 {
+    constructor
+
     indexAction
 
     postAction
