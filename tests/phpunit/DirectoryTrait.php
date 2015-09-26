@@ -14,6 +14,7 @@ trait DirectoryTrait
         mkdir('project0/src/Controller');
         mkdir('project0/src/Model');
         file_put_contents('project0/composer.json', $composerContent);
+        file_put_contents('project0/src/routes.php', '<?php');
         chdir('project0/');
     }
 }
