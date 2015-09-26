@@ -11,6 +11,7 @@ class DependencyServiceMock1 implements GeneratorServiceInterface {public functi
 
 class ControllerGeneratorTest extends \PHPUnit_Framework_TestCase
 {
+    use \SlimApiTest\DirectoryTrait;
     protected function setUp()
     {
         $this->controllerGenerator = new ControllerGenerator(new ControllerServiceMock, new RouteServiceMock, new DependencyServiceMock1);
@@ -28,18 +29,9 @@ class ControllerGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testControllerExists()
     {
-        $composerContent = '{"autoload":{"psr-4": {"Project0\\\": "src/"}}}';
+        $this->setupDirectory();
         $controllerContent = '<?php namespace Project0\Controller; class FooController {}';
-        chdir(__DIR__.'/../output');
-        if (file_exists('project0')) {
-            exec('rm -rf project0');
-        }
-        mkdir('project0');
-        mkdir('project0/src');
-        mkdir('project0/src/Controller');
-        file_put_contents('project0/composer.json', $composerContent);
-        file_put_contents('project0/src/Controller/FooController.php', $controllerContent);
-        chdir('project0/');
+        file_put_contents('src/Controller/FooController.php', $controllerContent);
 
         $this->assertFalse($this->controllerGenerator->validate('Foo', ['index']));
     }
