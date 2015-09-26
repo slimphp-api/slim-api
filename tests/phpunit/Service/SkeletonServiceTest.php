@@ -8,7 +8,8 @@ use org\bovigo\vfs\vfsStream;
  */
 class SkeletonServiceTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp() {
+    public function setUp()
+    {
         $this->root = vfsStream::setup();
     }
 
