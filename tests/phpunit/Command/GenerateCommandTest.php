@@ -12,6 +12,7 @@ class MockModelGeneratorMock2{public function validate() {return true;} public f
 
 class GenerateCommandTest extends \PHPUnit_Framework_TestCase
 {
+    use \SlimApiTest\DirectoryTrait;
     protected $tester;
     protected $command;
 
@@ -80,16 +81,8 @@ class GenerateCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRunFromInvalidPath()
     {
-        $composerContent = '{"autoload":{"psr-4": {"Project0\\\": "src/"}}}';
-        chdir(__DIR__.'/../output');
-        if (file_exists('project0')) {
-            exec('rm -rf project0');
-        }
-        mkdir('project0');
-        mkdir('project0/src');
-        mkdir('project0/src/Model');
-        file_put_contents('project0/composer.json', $composerContent);
-        chdir('project0/src/Model');
+        $this->setupDirectory();
+        chdir('src/Model');
         $this->setExpectedException('Exception', 'Commands must be run from root of project.');
         $this->tester->execute([
             'command' => $this->command->getName(),
@@ -110,18 +103,10 @@ class GenerateCommandTest extends \PHPUnit_Framework_TestCase
         $application->add(new GenerateCommand($generatorFactory));
         $tester  = new CommandTester($application->find('generate'));
 
-        $composerContent = '{"autoload":{"psr-4": {"Project0\\\": "src/"}}}';
+        $this->setupDirectory();
         $modelContent = '<?php namespace Project1\Model; class Test {}';
-        chdir(__DIR__.'/../output');
-        if (file_exists('project0')) {
-            exec('rm -rf project0');
-        }
-        mkdir('project0');
-        mkdir('project0/src');
-        mkdir('project0/src/Model');
-        file_put_contents('project0/composer.json', $composerContent);
-        file_put_contents('project0/src/Model/Bar.php', $modelContent);
-        chdir('project0');
+        file_put_contents('src/Model/Bar.php', $modelContent);
+
         $this->setExpectedException('Exception', 'Fields not valid.');
         $tester->execute([
             'command' => $this->command->getName(),

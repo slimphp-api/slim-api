@@ -1,5 +1,5 @@
 <?php
-namespace SlimApiTest\Service;
+namespace SlimApiTest\Skeleton;
 
 use SlimApi\Skeleton\SkeletonService;
 use org\bovigo\vfs\vfsStream;
@@ -8,7 +8,8 @@ use org\bovigo\vfs\vfsStream;
  */
 class SkeletonServiceTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp() {
+    public function setUp()
+    {
         $this->root = vfsStream::setup();
     }
 
