@@ -3,6 +3,7 @@ Basic slim api project and generator
 
 [![Build Status](https://travis-ci.org/slimphp-api/slim-api.svg)](https://travis-ci.org/slimphp-api/slim-api)
 [![Coverage Status](https://coveralls.io/repos/slimphp-api/slim-api/badge.svg?branch=master&service=github)](https://coveralls.io/github/slimphp-api/slim-api?branch=master)
+[![Code Climate](https://codeclimate.com/github/slimphp-api/slim-api/badges/gpa.svg)](https://codeclimate.com/github/slimphp-api/slim-api)
 
 #Status
 
