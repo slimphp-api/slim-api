@@ -5,6 +5,9 @@ use SlimApi\Command\RoutesCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class RoutesCommandTest extends \PHPUnit_Framework_TestCase
 {
     use \SlimApiTest\DirectoryTrait;
