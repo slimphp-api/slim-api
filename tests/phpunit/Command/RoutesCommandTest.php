@@ -18,28 +18,28 @@ class RoutesCommandTest extends \PHPUnit_Framework_TestCase
         $application->add(new RoutesCommand);
         $this->command = $application->find('routes');
         $this->tester  = new CommandTester($this->command);
+        $this->setupDirectory();
+        $routesFileStr = <<<'EOT'
+<?php
+EOT;
+        file_put_contents('src/routes.php', $routesFileStr);
     }
 
     public function testMustComposer()
     {
-        $this->setupDirectory();
         chdir('src');
         $this->setExpectedException('Exception', 'Commands must be run from root of project.');
         $this->tester->execute(['command' => $this->command->getName()]);
     }
 
-
-    public function testNoRoutes()
-    {
-        $this->setupDirectory();
-
-        $this->tester->execute(['command' => $this->command->getName()]);
-        $this->assertEmpty($this->tester->getDisplay());
-    }
+    // public function testNoRoutes()
+    // {
+    //     $this->tester->execute(['command' => $this->command->getName()]);
+    //     $this->assertEmpty($this->tester->getDisplay());
+    // }
 
     public function testMultipleRoutes()
     {
-        $this->setupDirectory();
         $routesFileStr = <<<'EOT'
 <?php
 $app->map(['GET'], '/bar3', 'Fred\Controller\Bar3Controller:indexAction');
@@ -67,7 +67,6 @@ EOT;
 
     public function testExecuteException()
     {
-        $this->setupDirectory();
         $routesFileStr = <<<'EOT'
 <?php
 throw new Exception('Foo exception');
