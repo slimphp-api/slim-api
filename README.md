@@ -7,11 +7,14 @@ Basic slim api project and generator
 
 #Status
 
-pre-alpha, init and create models/controllers/scaffolds is mostly complete, migrations and develop relations in model migrations.
+Alpha, init and create models/controllers/scaffolds is complete.
 
 #What?
 
-A simple generator for producing simplified controllers/models and migrations, using Slim, Phinx and eloquent. It should be relatively simple to replace the controller|model template, and use something other than Phinx for migration or eloquent for models.
+A simple command line app for producing simple controllers/models/migrations, routes and DI, using Slim and symfony console.
+
+###External modules
+By default the app uses phinx and eloquent for migrations and ORM, these are provided by external modules: [slim-eloquent](https://github.com/slimphp-api/slim-eloquent) and [slim-phinx](https://github.com/slimphp-api/slim-phinx)
 
 #Why?
 
@@ -29,6 +32,14 @@ slimapi init <project name> [location]
 ```
 
 Location defaults to the cwd if not specified.
+
+If you use a different migration/orm/structure module you'll then have to re-init the appropriate source, such as:
+
+```
+slimapi init:db
+```
+
+This must be done from the root or your project after the init.
 
 ###Models
 
