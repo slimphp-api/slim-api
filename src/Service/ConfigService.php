@@ -8,10 +8,13 @@ class ConfigService
      *
      * @return array
      */
-    public static function fetch()
+    public static function fetch($dir = false)
     {
+        if (false === $dir) {
+            $dir = getcwd();
+        }
         $config = [];
-        $files  = glob('config/*.config.php', GLOB_BRACE);
+        $files  = glob($dir.'/config/*.config.php', GLOB_BRACE);
         foreach ($files as $file) {
             $config = array_merge($config, (require $file));
         }

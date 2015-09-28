@@ -156,7 +156,6 @@ $container['api.config'] = function($container) {
 $container['commands'] = function ($container) {
     $commands = [];
     try {
-        $config = $container->get('api.config');
         $commands['init:db']  = $container->get('SlimApi\Command\InitDbCommand');
         $commands['generate'] = $container->get('SlimApi\Command\GenerateCommand');
         $commands['routes']   = $container->get('SlimApi\Command\RoutesCommand');
@@ -169,6 +168,7 @@ $container['commands'] = function ($container) {
 };
 
 $container['application'] = function($container) {
+    $container->get('api.config');
     $application = new \Symfony\Component\Console\Application('SlimApi', '@package_version@');
     $application->addCommands($container->get('commands'));
     return $application;
