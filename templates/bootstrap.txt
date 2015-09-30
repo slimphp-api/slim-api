@@ -1,9 +1,12 @@
 <?php
 use Slim\App;
 
-// import settings
-$config = require 'settings.php';
+$config = (new $name\Module)->loadDependencies();
 $app    = new App($config);
+
+// DIC configuration
+$container = $app->getContainer();
+
 // Set up dependencies
 require 'dependencies.php';
 // Register middleware

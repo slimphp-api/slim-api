@@ -49,7 +49,11 @@ class DependencyService implements GeneratorServiceInterface
     {
         $content        = PHP_EOL.implode(PHP_EOL.PHP_EOL, $this->commands);
         $this->commands = [];
-        return file_put_contents($this->targetLocation($name), $content, FILE_APPEND);
+        $origContent = file($this->targetLocation($name));
+        // insert content just before the return statement
+        // @todo: something neater?
+        array_splice($origContent, count($origContent)-2, 0, $content);
+        return file_put_contents($this->targetLocation($name), $origContent);
     }
 
     /**

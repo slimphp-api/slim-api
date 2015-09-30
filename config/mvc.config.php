@@ -10,7 +10,11 @@ $config['services.skeleton.structure'] = function($container) {
     // should there be one for each type? controllers, services, models?
     // in the end it's not going to be managed by the api generators,
     // so a generic starting place for people to begin with seemed sensible
+    $module           = file_get_contents($container->get('templateDir').'/Module.txt');
     $apiConfig        = file_get_contents($container->get('templateDir').'/apiConfig.txt');
+    $mvcConfig        = file_get_contents($container->get('templateDir').'/mvc.config.txt');
+    $slimConfig       = file_get_contents($container->get('templateDir').'/slim.config.txt');
+    $sfConfig         = file_get_contents($container->get('templateDir').'/service-factories.config.txt');
     $index            = file_get_contents($container->get('templateDir').'/index.txt');
     $dependencies     = file_get_contents($container->get('templateDir').'/dependencies.txt');
     $middleware       = file_get_contents($container->get('templateDir').'/middleware.txt');
@@ -25,6 +29,9 @@ $config['services.skeleton.structure'] = function($container) {
     return [
         'config' => [
             'slim-api.config.php'          => $apiConfig,
+            'mvc.config.php'               => $mvcConfig,
+            'slim.config.php'              => $slimConfig,
+            'service-factories.config.php' => $sfConfig,
         ],
         'migrations' => [],
         'public' => [
