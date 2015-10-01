@@ -1,6 +1,7 @@
 {
     "name": "slimphp-api/slim-api",
     "description": "Tool for generating slim api controllers/models",
+    "keywords": ["slim","api","generator","slimapi"],
     "require": {
         "php": ">5.6",
         "pimple/pimple": "3.*",
