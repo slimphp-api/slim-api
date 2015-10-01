@@ -4,16 +4,6 @@ namespace SlimApi\Service;
 class ModuleService
 {
     /**
-     * @param mixed $container
-     *
-     * @return
-     */
-    public function __construct($container)
-    {
-        $this->container = $container;
-    }
-
-    /**
      * Load the external modules Module class and dependencies
      *
      * @param string $moduleNamespace
@@ -27,6 +17,6 @@ class ModuleService
         // load the modules dependency file
         $moduleClass = '\\'.$moduleNamespace.'\\Module';
         $module = new $moduleClass;
-        $module->loadDependencies($this->container);
+        return $module->loadDependencies();
     }
 }

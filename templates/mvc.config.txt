@@ -1,7 +1,8 @@
 <?php
+$config = [];
+
 // -----------------------------------------------------------------------------
-// Service providers
+// Controller factories
 // -----------------------------------------------------------------------------
 
-// Flash messages
-// $container->register(new \Slim\Flash\Messages);
+return $config;
