@@ -16,10 +16,8 @@ $config['services.skeleton.structure'] = function($container) {
     $slimConfig       = file_get_contents($container->get('templateDir').'/slim.config.txt');
     $sfConfig         = file_get_contents($container->get('templateDir').'/service-factories.config.txt');
     $index            = file_get_contents($container->get('templateDir').'/index.txt');
-    $dependencies     = file_get_contents($container->get('templateDir').'/dependencies.txt');
     $middleware       = file_get_contents($container->get('templateDir').'/middleware.txt');
     $routes           = file_get_contents($container->get('templateDir').'/routes.txt');
-    $settings         = file_get_contents($container->get('templateDir').'/settings.txt');
     $bootstrap        = file_get_contents($container->get('templateDir').'/bootstrap.txt');
     $gitignore        = file_get_contents($container->get('templateDir').'/gitignore.txt');
     $composer         = file_get_contents($container->get('templateDir').'/composer.txt');
@@ -33,7 +31,9 @@ $config['services.skeleton.structure'] = function($container) {
             'slim.config.php'              => $slimConfig,
             'service-factories.config.php' => $sfConfig,
         ],
-        'migrations' => [],
+        'migrations' => [
+            '.gitkeep' => '',
+        ],
         'public' => [
             'index.php' => $index
         ],
@@ -44,12 +44,10 @@ $config['services.skeleton.structure'] = function($container) {
             'Model'            => [
                 '.gitkeep' => '',
             ],
-            'dependencies.php' => $dependencies,
-            'middleware.php'   => $middleware,
-            'routes.php'       => $routes,
-            'settings.php'     => $settings,
-            'bootstrap.php'    => $bootstrap,
-            'Module.php'       => $module,
+            'bootstrap.php'  => $bootstrap,
+            'middleware.php' => $middleware,
+            'Module.php'     => $module,
+            'routes.php'     => $routes,
         ],
         'tests' => [
             'phpunit' => [
