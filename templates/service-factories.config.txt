@@ -14,4 +14,9 @@ $config = [];
 //     return $logger;
 // };
 
+// Flash messages
+// $config['flash'] = function ($container) {
+//     return new \Slim\Flash\Messages;
+// };
+
 return $config;
