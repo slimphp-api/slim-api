@@ -1,3 +1,0 @@
-$config[\$namespace\Model\$name::class] = function($container) {
-    return new \$namespace\Model\$name;
-};

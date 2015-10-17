@@ -1,39 +1,40 @@
 <?php
 namespace SlimApi\Factory;
 
+use SlimApi\Generator\GeneratorInterface;
+
 class GeneratorFactory
 {
-    /**
-     * @param array $generators
-     *
-     * @return
-     */
-    public function __construct($generators)
-    {
-        $this->generators = $generators;
-    }
+    private $generators = [];
 
     /**
      * Fetches appropriate generator
      *
-     * @param string $type
+     * @param string $name
      *
      * @return GeneratorInterface|false the required generator or false if none.
      */
-    public function fetch($type)
+    public function fetch($name)
     {
         $generator = false;
-        switch ($type) {
-            case 'model':
-                $generator = $this->generators['model'];
-                break;
-            case 'controller':
-                $generator = $this->generators['controller'];
-                break;
-            case 'scaffold':
-                $generator = $this->generators['scaffold'];
-                break;
+        if (array_key_exists($name, $this->generators)) {
+            $generator = $this->generators[$name];
         }
         return $generator;
+    }
+
+    /**
+     * Add a generator to the factory
+     *
+     * @param string               $name   the name of the Generator
+     * @param GeneratorInterface   $class  the generator object to return for the specified name
+     */
+    public function add($name, GeneratorInterface $class)
+    {
+        if (array_key_exists($name, $this->generators)) {
+            throw new \InvalidArgumentException('Generator already exists.');
+        }
+
+        $this->generators[$name] = $class;
     }
 }

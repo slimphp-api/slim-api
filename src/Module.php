@@ -17,13 +17,20 @@ class Module
         $config = array_merge($config, ConfigService::fetch());
 
         $moduleService = new ModuleService;
-        if (array_key_exists('slim-api', $config)) {
-            foreach ($config['slim-api']['modules'] as $moduleNamespace) {
-                $config = array_merge($config, $moduleService->load($moduleNamespace));
-            }
+        if (! array_key_exists('slim-api', $config)) {
+            $config['slim-api'] = [
+                'modules' => [
+                    'SlimPhinx', //provides migrations
+                    'SlimMvc' //provides structure
+                ]
+            ];
         } else {
-            $phinxModule = new \SlimPhinx\Module;
-            $config = array_merge($config, $phinxModule->loadDependencies());
+            // load the target autoloader
+            require 'vendor/autoload.php';
+        }
+
+        foreach ($config['slim-api']['modules'] as $moduleNamespace) {
+            $config = array_merge($config, $moduleService->load($moduleNamespace));
         }
 
         return $config;

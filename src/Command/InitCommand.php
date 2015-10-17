@@ -3,7 +3,7 @@ namespace SlimApi\Command;
 
 use \Exception;
 use SlimApi\Skeleton\SkeletonInterface;
-use SlimApi\Database\DatabaseInterface;
+use SlimApi\Migration\MigrationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,11 +18,11 @@ class InitCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function __construct(SkeletonInterface $skeletonService, DatabaseInterface $databaseService)
+    public function __construct(SkeletonInterface $skeletonService, MigrationInterface $migrationService)
     {
         parent::__construct();
         $this->skeletonService = $skeletonService;
-        $this->databaseService = $databaseService;
+        $this->migrationService = $migrationService;
     }
 
     /**
@@ -75,7 +75,7 @@ class InitCommand extends Command
 
         try {
             $this->skeletonService->create($path, $name);
-            $this->databaseService->init($path);
+            $this->migrationService->init($path);
             $output->writeln('<info>'.static::$successMessage.'</info>');
         } catch (Exception $e) {
             $output->writeln($e->getMessage());

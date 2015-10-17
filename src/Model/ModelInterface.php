@@ -1,6 +1,7 @@
 <?php
 namespace SlimApi\Model;
 
+
 interface ModelInterface
 {
     /**

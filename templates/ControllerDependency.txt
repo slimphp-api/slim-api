@@ -1,3 +1,0 @@
-$config[\$namespace\Controller\$nameController::class] = function($container) {
-    return new \$namespace\Controller\$nameController($container->get('$namespace\Model\$name'));
-};

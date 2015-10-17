@@ -3,7 +3,7 @@ namespace SlimApi\Command;
 
 use \Exception;
 use SlimApi\Skeleton\SkeletonInterface;
-use SlimApi\Database\DatabaseInterface;
+use SlimApi\Migration\MigrationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +17,7 @@ class InitDbCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function __construct(DatabaseInterface $databaseService)
+    public function __construct(MigrationInterface $databaseService)
     {
         parent::__construct();
         $this->databaseService = $databaseService;

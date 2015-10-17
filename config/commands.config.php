@@ -2,11 +2,11 @@
 $config = [];
 
 $config['SlimApi\Command\InitCommand'] = function($container) {
-    return new SlimApi\Command\InitCommand($container->get('SlimApi\Skeleton\SkeletonInterface'), $container->get('SlimApi\Database\DatabaseInterface'));
+    return new SlimApi\Command\InitCommand($container->get('SlimApi\Skeleton\SkeletonInterface'), $container->get('SlimApi\Migration\MigrationInterface'));
 };
 
 $config['SlimApi\Command\InitDbCommand'] = function($container) {
-    return new SlimApi\Command\InitDbCommand($container->get('SlimApi\Database\DatabaseInterface'));
+    return new SlimApi\Command\InitDbCommand($container->get('SlimApi\Migration\MigrationInterface'));
 };
 
 $config['SlimApi\Command\GenerateCommand'] = function($container) {

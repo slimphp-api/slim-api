@@ -1,3 +1,0 @@
-public function postAction($request, $response, $args)
-{
-}
