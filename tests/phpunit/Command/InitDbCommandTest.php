@@ -14,7 +14,7 @@ class InitDbCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $phinxServiceMock = $this->getMockBuilder('SlimApi\Database\DatabaseInterface')
+        $phinxServiceMock = $this->getMockBuilder('SlimApi\Migration\MigrationInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $phinxServiceMock->method('init');

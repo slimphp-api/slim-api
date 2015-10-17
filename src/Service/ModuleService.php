@@ -12,8 +12,6 @@ class ModuleService
      */
     public function load($moduleNamespace)
     {
-        // load the target autoloader
-        require 'vendor/autoload.php';
         // load the modules dependency file
         $moduleClass = '\\'.$moduleNamespace.'\\Module';
         $module = new $moduleClass;

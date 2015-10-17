@@ -5,21 +5,18 @@ use SlimApi\Interfaces\GeneratorServiceInterface;
 
 class DependencyService implements GeneratorServiceInterface
 {
-    public $commands = [];
+    public $commands   = [];
+    private $templates = [];
 
     /**
      * @param string $dependencyFileLocation
-     * @param string $controllerDependencyTemplate
-     * @param string $modelDependencyTemplate
      * @param string $namespaceRoot
      *
      * @return void
      */
-    public function __construct($dependencyFileLocation, $controllerDependencyTemplate, $modelDependencyTemplate, $namespaceRoot)
+    public function __construct($dependencyFileLocation, $namespaceRoot)
     {
         $this->dependencyFileLocation       = $dependencyFileLocation;
-        $this->controllerDependencyTemplate = $controllerDependencyTemplate;
-        $this->modelDependencyTemplate      = $modelDependencyTemplate;
         $this->namespaceRoot                = $namespaceRoot;
     }
 
@@ -29,16 +26,11 @@ class DependencyService implements GeneratorServiceInterface
     public function processCommand($type, ...$arguments)
     {
         $name = array_shift($arguments);
-        switch ($type) {
-            case 'injectController':
-                $this->addDependency($name, $this->controllerDependencyTemplate);
-                break;
-            case 'injectModel':
-                $this->addDependency($name, $this->modelDependencyTemplate);
-                break;
-            default:
-                throw new \Exception('Invalid dependency command.');
-                break;
+        $template = $this->fetch($type);
+        if ($template) {
+            $this->addDependency($name, $template);
+        } else {
+            throw new \Exception('Invalid dependency command.');
         }
     }
 
@@ -75,5 +67,36 @@ class DependencyService implements GeneratorServiceInterface
     private function addDependency($name, $template)
     {
         $this->commands[] = strtr($template, ['$namespace' => $this->namespaceRoot, '$name' => $name]);
+    }
+
+    /**
+     * Fetches appropriate template
+     *
+     * @param string $name
+     *
+     * @return GeneratorInterface|false the required template or false if none.
+     */
+    public function fetch($name)
+    {
+        $template = false;
+        if (array_key_exists($name, $this->templates)) {
+            $template = $this->templates[$name];
+        }
+        return $template;
+    }
+
+    /**
+     * Add a template to the factory
+     *
+     * @param string   $name      the name of the Generator
+     * @param string   $template  the template to return for the specified name
+     */
+    public function add($name, $template)
+    {
+        if (array_key_exists($name, $this->templates)) {
+            throw new \InvalidArgumentException('Template already exists.');
+        }
+
+        $this->templates[$name] = $template;
     }
 }

@@ -1,7 +1,0 @@
-<?php
-namespace $namespace\Controller;
-
-class $nameController
-{
-$constructor$commands
-}

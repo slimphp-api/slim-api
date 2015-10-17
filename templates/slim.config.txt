@@ -1,9 +1,0 @@
-<?php
-$config = [];
-
-$config['environment.name'] = function($container) {
-    return (getenv('ENV') ?: 'development');
-};
-$config['settings']['displayErrorDetails'] = ('dev' === $config['environment.name']);
-
-return $config;

@@ -1,3 +1,0 @@
-<?php
-// Application middleware
-// e.g: $app->add(new \gabriel403\SlimJson);

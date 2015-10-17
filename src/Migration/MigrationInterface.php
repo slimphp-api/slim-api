@@ -1,8 +1,7 @@
 <?php
-namespace SlimApi\Database;
+namespace SlimApi\Migration;
 
-
-interface DatabaseInterface
+interface MigrationInterface
 {
     /**
      * Where any initiation for db service during app setup occurs

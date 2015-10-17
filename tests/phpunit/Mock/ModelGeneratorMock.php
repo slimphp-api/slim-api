@@ -1,12 +1,12 @@
 <?php
 namespace SlimApiTest\Mock;
 
-use SlimApi\Generator\ModelGenerator;
 use SlimApi\Command\GenerateCommand;
+use SlimApi\Generator\GeneratorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ModelGeneratorMock extends ModelGenerator
+class ModelGeneratorMock implements GeneratorInterface
 {
     public function __construct()
     {

@@ -6,6 +6,7 @@
         "pimple/pimple": "3.*",
         "symfony/console": "2.*",
         "slimphp-api/slim-phinx": "*@dev",
+        "slimphp-api/slim-mvc": "*@dev",
         "slim/slim": "3.*@dev"
     },
     "require-dev": {

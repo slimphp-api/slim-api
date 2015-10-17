@@ -8,7 +8,10 @@ class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->generatorFactory = new GeneratorFactory(['model' => new ModelGeneratorMock, 'controller' => new ModelGeneratorMock, 'scaffold' => new ModelGeneratorMock]);
+        $this->generatorFactory = new GeneratorFactory();
+        $this->generatorFactory->add('model', new ModelGeneratorMock);
+        $this->generatorFactory->add('controller', new ModelGeneratorMock);
+        $this->generatorFactory->add('scaffold', new ModelGeneratorMock);
     }
 
     public function testReturnsModelGenerator()

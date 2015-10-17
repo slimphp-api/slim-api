@@ -17,7 +17,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $composerServiceMock->method('create');
 
-        $phinxServiceMock = $this->getMockBuilder('SlimApi\Database\DatabaseInterface')
+        $phinxServiceMock = $this->getMockBuilder('SlimApi\Migration\MigrationInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $phinxServiceMock->method('init');
@@ -142,7 +142,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteException()
     {
-        $this->command->databaseService->method('init')->will($this->throwException(new \Exception('Foo exception')));
+        $this->command->migrationService->method('init')->will($this->throwException(new \Exception('Foo exception')));
 
         $this->tester->execute([
             'command'  => $this->command->getName(),
