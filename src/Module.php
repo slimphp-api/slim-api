@@ -20,8 +20,8 @@ class Module
         if (! array_key_exists('slim-api', $config)) {
             $config['slim-api'] = [
                 'modules' => [
-                    'SlimPhinx', //provides migrations
-                    'SlimMvc' //provides structure
+                    'SlimApi\Phinx', //provides migrations
+                    'SlimApi\Mvc' //provides structure
                 ]
             ];
         } else {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d41e32e0dcbd892822c1cbdec49dba72",
+    "hash": "44103dface44c907d943291a0307c5e9",
     "content-hash": "c8731f1baebd1111a1957738620edb79",
     "packages": [
         {
@@ -240,12 +240,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "80555aa99c36d357c546697cf7f9bb4012c7532d"
+                "reference": "ff0d555b0f3ace2268fefdde30d086c862006783"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/80555aa99c36d357c546697cf7f9bb4012c7532d",
-                "reference": "80555aa99c36d357c546697cf7f9bb4012c7532d",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/ff0d555b0f3ace2268fefdde30d086c862006783",
+                "reference": "ff0d555b0f3ace2268fefdde30d086c862006783",
                 "shasum": ""
             },
             "require": {
@@ -298,7 +298,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2015-10-09 07:50:10"
+            "time": "2015-10-20 20:21:11"
         },
         {
             "name": "slimphp-api/slim-mvc",
@@ -306,12 +306,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp-api/slim-mvc.git",
-                "reference": "6c7df22bff508760062af03ac6a4eb7de500b933"
+                "reference": "f2df93c7acbfd187db108228f862245348be9849"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp-api/slim-mvc/zipball/6c7df22bff508760062af03ac6a4eb7de500b933",
-                "reference": "6c7df22bff508760062af03ac6a4eb7de500b933",
+                "url": "https://api.github.com/repos/slimphp-api/slim-mvc/zipball/f2df93c7acbfd187db108228f862245348be9849",
+                "reference": "f2df93c7acbfd187db108228f862245348be9849",
                 "shasum": ""
             },
             "require": {
@@ -326,7 +326,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "SlimMvc\\": "src/"
+                    "SlimApi\\Mvc\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -340,7 +340,7 @@
                 }
             ],
             "description": "A module for slim-api for mvc, creating structure, generators for creating controllers/models and scaffold",
-            "time": "2015-10-17 22:41:55"
+            "time": "2015-10-20 20:34:33"
         },
         {
             "name": "slimphp-api/slim-phinx",
@@ -348,12 +348,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp-api/slim-phinx.git",
-                "reference": "6529087d5ea9a56c64dc937fc8a9b741a6b4854a"
+                "reference": "730e6ef22391b1492406c036457ae2744b94938a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp-api/slim-phinx/zipball/6529087d5ea9a56c64dc937fc8a9b741a6b4854a",
-                "reference": "6529087d5ea9a56c64dc937fc8a9b741a6b4854a",
+                "url": "https://api.github.com/repos/slimphp-api/slim-phinx/zipball/730e6ef22391b1492406c036457ae2744b94938a",
+                "reference": "730e6ef22391b1492406c036457ae2744b94938a",
                 "shasum": ""
             },
             "require": {
@@ -369,7 +369,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "SlimPhinx\\": "src/"
+                    "SlimApi\\Phinx\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -389,7 +389,7 @@
                 "slim",
                 "slimapi"
             ],
-            "time": "2015-10-17 22:46:53"
+            "time": "2015-10-20 20:34:19"
         },
         {
             "name": "symfony/config",
