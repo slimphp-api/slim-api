@@ -4,5 +4,18 @@ set_error_handler(function ($severity, $message, $file, $line) {
     throw new \ErrorException($message, $severity, $severity, $file, $line);
 });
 
-require __DIR__.'/../vendor/autoload.php';
+function findAutoload($curdir, $toFind)
+{
+    if ('/' === $curdir) {
+        return false;
+    } elseif (file_exists($curdir.$toFind)) {
+        return $curdir.$toFind;
+    } else {
+        return findAutoload($curdir.'/..', $toFind);
+    }
+}
+$autoload = findAutoload(__DIR__, '/vendor/autoload.php');
+
+require $autoload;
+
 require __DIR__.'/../src/bootstrap.php';
