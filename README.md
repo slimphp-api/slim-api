@@ -83,7 +83,7 @@ It would also create the GET/POST `/foo` routes and the GET/PUT/DELETE `/foo/{id
 
 ###Scaffold
 
-Scaffolding combines controller and model generation but with added jazz. It configures the controller to receive the model as a constructor param, configures the DI to inject the model to the controller and finally populates the normally empty controller methods with basic CRUD functionality. You can't provide arguments to specify controller methods (it creates them all), but you can supply your methods definition.
+Scaffolding combines controller and model generation but with added jazz. It configures the controller to receive the model as a constructor param, configures the DI to inject the model to the controller and finally populates the normally empty controller methods with basic CRUD functionality. You can't provide arguments to specify controller methods (it creates them all), but you can supply your model definition.
 
 ```
 slimapi generate scaffold foo field1:integer field2:string
