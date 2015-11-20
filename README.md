@@ -22,6 +22,11 @@ I wanted to be able to create API end points as easily as possible, and I love t
 
 #How?
 
+###Installation
+
+Install globally within your user account `composer global require slimphp-api/slim-api dev-master`  
+Make sure global composer is in your path `export PATH=~/.composer/vendor/bin:$PATH` in .bashrc
+
 
 ###Init
 
