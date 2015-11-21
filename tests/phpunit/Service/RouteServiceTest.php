@@ -65,4 +65,23 @@ EOT;
         $this->assertEquals($this->routeService->targetLocation('foo'), 'src/routes.php');
     }
 
+    public function testInvalidProcessCommand()
+    {
+        $this->setExpectedException('Exception', 'Invalid route command.');
+        $this->routeService->processCommand('foo', 'addRoute', 'post');
+    }
+
+    public function testCreate()
+    {
+        $this->routeService->processCommand('addRoute', 'addRoute', 'delete');
+        $this->routeService->create('Foo');
+
+        $routes = <<<'EOT'
+<?php
+// Routes
+
+$app->map(['DELETE'], '/foo/{id}', 'Foo\Controller\FooController:deleteAction');
+EOT;
+        $this->assertEquals(file_get_contents($this->routeService->targetLocation('foo')), $routes);
+    }
 }
