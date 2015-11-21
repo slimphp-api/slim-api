@@ -30,7 +30,7 @@ class InitCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNameMissing()
     {
-        $this->setExpectedException('Exception', 'Not enough arguments.');
+        $this->setExpectedException('Exception', 'Not enough arguments (missing: "name").');
         $this->tester->execute([
             'command' => $this->command->getName(),
         ]);

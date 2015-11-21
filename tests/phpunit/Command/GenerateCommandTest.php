@@ -32,7 +32,7 @@ class GenerateCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNotEnoughArgs1()
     {
-        $this->setExpectedException('Exception', 'Not enough arguments.');
+        $this->setExpectedException('Exception', 'Not enough arguments (missing: "name").');
         $this->tester->execute([
             'command' => $this->command->getName(),
             'type'    => '5foo'
@@ -41,7 +41,7 @@ class GenerateCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNotEnoughArgs2()
     {
-        $this->setExpectedException('Exception', 'Not enough arguments.');
+        $this->setExpectedException('Exception', 'Not enough arguments (missing: "type").');
         $this->tester->execute([
             'command' => $this->command->getName(),
             'name'    => 'bar'
@@ -93,22 +93,12 @@ class GenerateCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testModelExists()
     {
-        $generatorFactory = $this->getMockBuilder('SlimApi\Factory\GeneratorFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $generatorFactory->method('fetch')
-            ->willReturn(new MockModelGeneratorMock);
-
-        $application = new Application('SlimApi', '@package_version@');
-        $application->add(new GenerateCommand($generatorFactory));
-        $tester  = new CommandTester($application->find('generate'));
-
         $this->setupDirectory();
         $modelContent = '<?php namespace Project1\Model; class Test {}';
         file_put_contents('src/Model/Bar.php', $modelContent);
 
         $this->setExpectedException('Exception', 'Fields not valid.');
-        $tester->execute([
+        $this->tester->execute([
             'command' => $this->command->getName(),
             'type'    => 'model',
             'name'    => 'bar'
@@ -135,13 +125,24 @@ class GenerateCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $result);
     }
 
-    // public function testSuccess()
-    // {
-    //     $result = $this->tester->execute([
-    //         'command' => $this->command->getName(),
-    //         'type'    => 'model',
-    //         'name'    => 'baz'
-    //     ]);
-    //     $this->assertEquals(0, $result);
-    // }
+    public function testSuccess()
+    {
+        $generatorFactory = $this->getMockBuilder('SlimApi\Factory\GeneratorFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $generatorFactory->method('fetch')
+            ->willReturn(new MockModelGeneratorMock2);
+
+        $application = new Application('SlimApi', '@package_version@');
+        $application->add(new GenerateCommand($generatorFactory));
+        $this->command = $application->find('generate');
+        $this->tester  = new CommandTester($this->command);
+
+        $result = $this->tester->execute([
+            'command' => $this->command->getName(),
+            'type'    => 'model',
+            'name'    => 'baz'
+        ]);
+        $this->assertEquals(0, $result);
+    }
 }
