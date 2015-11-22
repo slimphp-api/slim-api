@@ -10,6 +10,18 @@ class DependencyServiceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->setupDirectory();
+        $mvcTemplate = <<<'EOT'
+<?php
+$config = [];
+
+// -----------------------------------------------------------------------------
+// Controller factories
+// -----------------------------------------------------------------------------
+
+return $config;
+EOT;
+        file_put_contents('config/mvc.config.php', $mvcTemplate);
+
         $this->dependencyService = new DependencyService('config/mvc.config.php', 'Foo');
     }
 
@@ -39,7 +51,7 @@ class DependencyServiceTest extends \PHPUnit_Framework_TestCase
     public function testProcessCommand()
     {
         $this->dependencyService->add('Bar', 'some template');
-        $this->dependencyService->processCommand('Bar', 'some template');
+        $this->dependencyService->processCommand('Bar', 'foo');
         $this->assertEquals($this->dependencyService->commands, ['some template']);
     }
 
@@ -48,5 +60,26 @@ class DependencyServiceTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception', 'Invalid dependency command.');
         $this->dependencyService->add('Foo', 'some template');
         $this->dependencyService->processCommand('Bar', 'some template');
+    }
+
+    public function testCreate()
+    {
+        $this->dependencyService->add('Bar', 'some template');
+        $this->dependencyService->processCommand('Bar', 'foo');
+        $this->dependencyService->create('buz');
+
+        $mvcFile = <<<'EOT'
+<?php
+$config = [];
+
+// -----------------------------------------------------------------------------
+// Controller factories
+// -----------------------------------------------------------------------------
+
+some template
+return $config;
+EOT;
+
+        $this->assertEquals(file_get_contents('config/mvc.config.php'), $mvcFile);
     }
 }
