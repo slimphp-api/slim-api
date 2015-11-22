@@ -31,4 +31,10 @@ class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase
         $generator = $this->generatorFactory->fetch('scaffold');
         $this->assertInstanceOf('SlimApi\Generator\GeneratorInterface', $generator);
     }
+
+    public function testDuplicateFactory()
+    {
+        $this->setExpectedException('Exception', 'Generator already exists.');
+        $this->generatorFactory->add('model', new ModelGeneratorMock);
+    }
 }
