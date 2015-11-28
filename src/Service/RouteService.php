@@ -43,7 +43,7 @@ class RouteService implements GeneratorServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function create($name, $options)
+    public function create($name, $options = [])
     {
         $version = '/'.(array_key_exists('version', $options) ? $options['version'] : '');
         $content = PHP_EOL.PHP_EOL.implode(PHP_EOL, $this->commands);
