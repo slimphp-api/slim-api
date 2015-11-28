@@ -17,7 +17,7 @@ class ModelGeneratorMock implements GeneratorInterface
         return true;
     }
 
-    public function process($name, $fields)
+    public function process($name, $fields, $options)
     {
         return true;
     }

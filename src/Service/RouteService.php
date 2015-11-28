@@ -43,10 +43,11 @@ class RouteService implements GeneratorServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function create($name)
+    public function create($name, $options = [])
     {
+        $version = '/'.(array_key_exists('version', $options) ? $options['version'] : '');
         $content = PHP_EOL.PHP_EOL.implode(PHP_EOL, $this->commands);
-        $content = strtr($content, ['$route' => '/'.strtolower($name), '$name' => $name]);
+        $content = strtr($content, ['$route' => '/'.strtolower($name), '$name' => $name, '$version' => $version]);
         return file_put_contents($this->targetLocation($name), $content, FILE_APPEND);
     }
 

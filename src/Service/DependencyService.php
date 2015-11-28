@@ -37,7 +37,7 @@ class DependencyService implements GeneratorServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function create($name)
+    public function create($name, $options = [])
     {
         $content        = PHP_EOL.implode(PHP_EOL.PHP_EOL, $this->commands);
         $this->commands = [];

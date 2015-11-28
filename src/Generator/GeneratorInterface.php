@@ -18,8 +18,9 @@ interface GeneratorInterface
      *
      * @param string $name
      * @param array $fields
+     * @param array $options
      *
      * @return void
      */
-    public function process($name, $fields);
+    public function process($name, $fields, $options);
 }

@@ -45,6 +45,12 @@ class GenerateCommand extends Command
                 InputArgument::IS_ARRAY,
                 'What fields (if appropriate).'
             )
+            ->addOption(
+                'api-version',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                "When creating scaffold/controller/route this surrounds the route in a version"
+            )
         ;
     }
 
@@ -73,13 +79,15 @@ class GenerateCommand extends Command
             throw new Exception('Commands must be run from root of project.');
         }
 
+        $version = $input->getOption('api-version');
+
         $generator = $this->generatorFactory->fetch($type);
         if (!$generator->validate($name, $fields)) {
             throw new Exception('Fields not valid.');
         }
 
         try {
-            $generator->process($name, $fields);
+            $generator->process($name, $fields, ['version' => $version]);
             $output->writeln('<info>Generation completed.</info>');
         } catch (Exception $e) {
             echo $e->getMessage();
