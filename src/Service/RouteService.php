@@ -16,8 +16,8 @@ class RouteService implements GeneratorServiceInterface
      */
     public function __construct($routerFileLocation, $routeTemplate, $namespaceRoot)
     {
-        $this->template           = $routeTemplate;
         $this->routerFileLocation = $routerFileLocation;
+        $this->template           = $routeTemplate;
         $this->controllerLocation = $namespaceRoot.'\Controller\$nameController';
     }
 
