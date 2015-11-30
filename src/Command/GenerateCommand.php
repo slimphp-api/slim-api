@@ -51,6 +51,15 @@ class GenerateCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 "When creating scaffold/controller/route this surrounds the route in a version"
             )
+            ->setHelp(<<<EOT
+The <info>generate</info> command help to generate controllers/models/routes or all together as scaffold.
+Model/scaffold generators take the db definition as extra arguments, in the form name:type:length:nullable:unique in most cases.
+<info>slimapi generate scaffold user oauthToken:text::false:true token:string:128:false:true role:string:128:false</info>
+In the case of the type being reference the name should be the reference, and it also takes extra arguments for action when foreign key deleted and updated.
+<info>slimapi generate scaffold scaffold foo field1:integer field2:string user:reference</info>
+<info>slimapi generate scaffold scaffold bar field1:integer field2:string user:reference:::NO_ACTION:CASCADE</info>
+EOT
+            )
         ;
     }
 
